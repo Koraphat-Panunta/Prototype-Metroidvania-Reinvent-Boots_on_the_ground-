@@ -15,14 +15,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKey(KeyCode.J))
+        
+        if (Input.GetKeyDown(KeyCode.J))
         {
             MyCharacter.Attack();
         }
         else
         {
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.A) && MyCharacter.Change_state_able == true)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
                     MyCharacter.Walk(Character.Direction.Left);
                 }
             }
-            else if (Input.GetKey(KeyCode.D))
+            else if (Input.GetKey(KeyCode.D) && MyCharacter.Change_state_able == true)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -44,10 +44,11 @@ public class PlayerController : MonoBehaviour
                     MyCharacter.Walk(Character.Direction.Right);
                 }
             }
-            else 
+            else if( MyCharacter.Change_state_able == true)
             {
-                MyCharacter.idle();
+                MyCharacter.idle();            
             }
+           
         }
 
     }
