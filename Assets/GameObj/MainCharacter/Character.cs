@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour 
 {
     // Start is called before the first frame update
     public Animator MyAnimator;
     public Rigidbody2D MyRigidbody2D;
-    private float WalkSpeed = 1.5f;
-    private float RunSpeed = 3.0f;
+    public GameObject Player;
+    private float Walk_speed = 1.5f;
+    private float Run_speed = 3.0f;
     public bool Change_state_able = true; 
     public bool ATK_Combo_Continue = false;
     public GameObject Target;
+    public Collider2D Attack_box;
+    public Collider2D Hitted_box;
+    public bool Is_attacking = false;
     public enum Direction 
     {
         Left,
         Right
     }
     public Direction MyDirection = Direction.Right;
+   
+
     void Start()
     {
         
@@ -28,10 +34,11 @@ public class Character : MonoBehaviour
     private void Update()
     {  
     }
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         DirectionManagement();
-        AttackCombo();
+        DectionalTarget();         
+        PerformedAction();        
     }
     //Behavior
     public void Attack() 
@@ -68,12 +75,13 @@ public class Character : MonoBehaviour
     }
 
     //
-    private void AttackCombo() 
+    private void AttackMechanical() 
     {
         if (MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack 1") ||
             MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack 2") ||
             MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack 3"))
         {
+            //AttackIsEnd
             if (MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.85f && ATK_Combo_Continue == true)
             {
                 ATK_Combo_Continue = false;
@@ -95,10 +103,27 @@ public class Character : MonoBehaviour
             {
                 Change_state_able = true;
             }
+            //AttackIsDamaging
+            if(MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f&& MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.9f) 
+            {
+                Is_attacking = true;
+            }
+            else 
+            {
+                Is_attacking = false;
+            }
         }
         else
         {
             Change_state_able = true;
+        }
+        if(Is_attacking == true) 
+        {
+            Attack_box.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else 
+        {
+            Attack_box.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
     private void DirectionManagement() 
@@ -107,32 +132,70 @@ public class Character : MonoBehaviour
         {
             if (MyDirection == Direction.Left)
             {
-                MyRigidbody2D.velocity = new Vector2(-WalkSpeed, 0);
+                Debug.Log("Walk");
+                MyRigidbody2D.velocity = new Vector2(-Walk_speed, 0);
             }
             else if (MyDirection == Direction.Right)
             {
-                MyRigidbody2D.velocity = new Vector2(WalkSpeed, 0);
+                MyRigidbody2D.velocity = new Vector2(Walk_speed, 0);
             }
         }
         if (MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
         {
             if (MyDirection == Direction.Left)
             {
-                MyRigidbody2D.velocity = new Vector2(-RunSpeed, 0);
+                MyRigidbody2D.velocity = new Vector2(-Run_speed, 0);
             }
             else if (MyDirection == Direction.Right)
             {
-                MyRigidbody2D.velocity = new Vector2(RunSpeed, 0);
+                MyRigidbody2D.velocity = new Vector2(Run_speed, 0);
             }
         }
         if (MyDirection == Direction.Left)
         {
-            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+           Player.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         }
         if (MyDirection == Direction.Right)
         {
-            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            Player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         }
+
+    }
+    private void PerformedAction() 
+    { 
+        AttackMechanical();
+    }
+    private void DectionalTarget() 
+    {
+        Vector2 Origin = new Vector2(Player.gameObject.transform.position.x, Player.gameObject.transform.position.y+0.6f);
+        Vector2 Directional;
+        if (MyDirection == Direction.Left) 
+        {
+            Directional = new Vector2(-10, 0);
+        }
+        else 
+        {
+            Directional = new Vector2( 10, 0);
+        }
+        RaycastHit2D ThisTarget = Physics2D.Raycast(Origin,Directional,1000);
+        if (ThisTarget.rigidbody != null) 
+        {
+            Debug.Log("RayHit");          
+            if (ThisTarget.rigidbody.CompareTag("Enemy"))
+            {
+                Target = ThisTarget.rigidbody.gameObject;
+            }
+            else
+            {
+                Target = null;
+            }
+        }
+        else
+        {
+            Target = null;
+        }
+        Debug.DrawRay(Origin, Directional, Color.green) ;
+
 
     }
 

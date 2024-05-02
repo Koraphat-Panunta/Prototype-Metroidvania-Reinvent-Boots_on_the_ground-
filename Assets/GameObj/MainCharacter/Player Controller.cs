@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private Character MyCharacter;
+    public Character MyCharacter;
+    
+    
   
     void Start()
     {
@@ -14,8 +16,8 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {    
+          
         if (Input.GetKeyDown(KeyCode.J))
         {
             MyCharacter.Attack();
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
             }
            
         }
-
+       
     }
     public Character GetCharacter() 
     {
