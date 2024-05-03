@@ -23,7 +23,23 @@ public class Character : MonoBehaviour
         Right
     }
     public Direction MyDirection = Direction.Right;
-   
+    public enum Stance 
+    {
+        Crouch,
+        Stand,
+        Run,
+        Sprint,
+        Fly
+    }
+   public enum Action 
+    {
+        None,
+        Attack,
+        Dodge,
+        Jump,
+        Guard,
+        Parry,
+    }
 
     void Start()
     {
