@@ -1,3 +1,4 @@
+using Assets.GameObj.MainCharacter.State;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -18,6 +19,12 @@ public class Character : MonoBehaviour
     public IdleState Idle;
     public WalkState Walk;
     public SprintState Sprint;
+    public AttackState Attack;
+
+    private Attack_1 attack_1;
+    private Attack_2 attack_2;
+    private Attack_3 attack_3;
+    
     public enum Direction 
     {
         Left,
@@ -33,7 +40,16 @@ public class Character : MonoBehaviour
         Idle = new IdleState(MyAnimator, Player);
         Walk = new WalkState(MyAnimator, Player);
         Sprint = new SprintState(MyAnimator, Player);
+        Attack = new AttackState(MyAnimator, Player, Attack_box);
+
+        attack_1 = new Attack_1(MyAnimator, Player, Attack_box);
+        attack_2 = new Attack_2(MyAnimator, Player, Attack_box);
+        attack_3 = new Attack_3(MyAnimator, Player, Attack_box);
+
         CharacterStateMachine = new MainCharacterStateMachine(Idle);
+        
+
+        Attack_box.enabled = false;
     }
 
     // Update is called once per frame
@@ -42,6 +58,7 @@ public class Character : MonoBehaviour
         PerformedIdle();
         PerformedRun();
         PerformedSprint();
+        PerformedAttack();
         CharacterStateMachine.UpdateState();
     }
     public void FixedUpdate()
@@ -113,6 +130,11 @@ public class Character : MonoBehaviour
                 MyDirection = Direction.Right;
                 CharacterStateMachine.ChangeState(Walk);
             }
+            if (Input.GetKey(KeyCode.J)) 
+            {
+                Attack = attack_1;
+                CharacterStateMachine.ChangeState(Attack);
+            }
         }
     }
     private void PerformedRun() 
@@ -136,6 +158,11 @@ public class Character : MonoBehaviour
                 if (Input.GetKey(KeyCode.D))
                 {
                     MyDirection = Direction.Right;
+                }
+                if (Input.GetKey(KeyCode.J))
+                {
+                    Attack = attack_1;
+                    CharacterStateMachine.ChangeState(Attack);
                 }
             }
         }
@@ -176,6 +203,58 @@ public class Character : MonoBehaviour
                 }
             }
            
+        }
+    }
+    private void PerformedAttack() 
+    {
+        if(CharacterStateMachine.Current_state == Attack) 
+        {
+            if(Attack.CurrentAttackPhase == AttackState.AttackPhase.PreAttack) 
+            {
+                if (Input.GetKey(KeyCode.A))
+                {
+                    MyDirection = Direction.Left;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    MyDirection = Direction.Right;
+                }
+            }
+            else if(Attack.CurrentAttackPhase == AttackState.AttackPhase.PostAttack) 
+            {
+                if (Input.GetKey(KeyCode.J)) 
+                {
+                    if (Attack == attack_1) 
+                    {
+                        Attack = attack_2;
+                        CharacterStateMachine.ChangeState(Attack);
+                    }
+                    else if(Attack == attack_2) 
+                    {
+                        Attack = attack_3;
+                        CharacterStateMachine.ChangeState(Attack);
+                    }
+                }
+                
+            }
+            else if (Attack.CurrentAttackPhase == AttackState.AttackPhase.None)
+            {
+                if (Input.GetKey(KeyCode.A))
+                {
+                    CharacterStateMachine.ChangeState(Walk);
+                    MyDirection = Direction.Left;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    CharacterStateMachine.ChangeState(Walk);
+                    MyDirection = Direction.Right;
+                }
+                if (Input.anyKey == false)
+                {
+                    Debug.Log("Idle");
+                    CharacterStateMachine.ChangeState(Idle);
+                }
+            }
         }
     }
 
