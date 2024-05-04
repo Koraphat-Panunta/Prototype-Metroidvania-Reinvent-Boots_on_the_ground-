@@ -601,19 +601,6 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1078848047332479395, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
   m_PrefabInstance: {fileID: 16001785378808330}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &815666103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815666098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1424c63bd6d44b4481cb40570157960, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyCharacter: {fileID: 815666105}
 --- !u!95 &815666104 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 501724405548343172, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
@@ -634,12 +621,9 @@ MonoBehaviour:
   MyAnimator: {fileID: 815666104}
   MyRigidbody2D: {fileID: 815666100}
   Player: {fileID: 815666098}
-  Change_state_able: 0
-  ATK_Combo_Continue: 0
   Target: {fileID: 0}
   Attack_box: {fileID: 668865526}
   Hitted_box: {fileID: 668865526}
-  Is_attacking: 0
   MyDirection: 0
 --- !u!4 &815666108 stripped
 Transform:
@@ -877,6 +861,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6571893177289084742, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -357304852, guid: 4a29a3cb20db22f488d5bef77c55af0f, type: 3}
+    - target: {fileID: 6571893177289084742, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 0
       objectReference: {fileID: 0}
@@ -887,9 +875,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 668865528}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1142575252726139532, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 815666103}
     - targetCorrespondingSourceObject: {fileID: 1142575252726139532, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
       insertIndex: -1
       addedObject: {fileID: 815666105}

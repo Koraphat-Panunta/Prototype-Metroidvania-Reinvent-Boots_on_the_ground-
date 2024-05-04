@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,322 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Combo2_0
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 1917
+        width: 81
+        height: 86
+      alignment: 9
+      pivot: {x: 0.23573586, y: 0.014896836}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c509e6ef393a9fa42b02ab1cf0591a54
+      internalID: -979515774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_1
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 1898
+        width: 72
+        height: 93
+      alignment: 9
+      pivot: {x: 0.13292821, y: 0.20641828}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2f96c4487bef0440a951e78cc7f4181
+      internalID: 984908210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_2
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 1916
+        width: 122
+        height: 70
+      alignment: 9
+      pivot: {x: 0.09019445, y: 0.014653669}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45c2af006a4526f4d8a1b83d1c3b1c4b
+      internalID: 680370890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_3
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 1917
+        width: 127
+        height: 80
+      alignment: 9
+      pivot: {x: 0.06636396, y: 0.010476684}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0381ec3e8080c54ebf504ccc441dac9
+      internalID: -1572232350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_5
+      rect:
+        serializedVersion: 2
+        x: 1130
+        y: 1916
+        width: 93
+        height: 85
+      alignment: 9
+      pivot: {x: 0.0691338, y: 0.031247128}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff6ef77358f16cc4aa4ae5c1ae11328c
+      internalID: 826038830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_6
+      rect:
+        serializedVersion: 2
+        x: 1386
+        y: 1911
+        width: 84
+        height: 93
+      alignment: 9
+      pivot: {x: 0.08428229, y: 0.080336705}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b28bd641b0d5c8b4ea120f7ba90f42a6
+      internalID: 700263208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_7
+      rect:
+        serializedVersion: 2
+        x: 1643
+        y: 1912
+        width: 73
+        height: 87
+      alignment: 9
+      pivot: {x: 0.11416919, y: 0.071756296}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fe9e0b0e92b22f4fb33c8f5e1fe60c9
+      internalID: 418162637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_8
+      rect:
+        serializedVersion: 2
+        x: 1898
+        y: 1915
+        width: 65
+        height: 87
+      alignment: 9
+      pivot: {x: 0.15444148, y: 0.024628738}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 558c1a0c62bf4a240ad3ed4510d6b552
+      internalID: -1292337618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_9
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 1661
+        width: 60
+        height: 85
+      alignment: 9
+      pivot: {x: 0.16577911, y: 0.020025276}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df025ee197fa8224094212d6b44d7169
+      internalID: 1090979387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_10
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 1655
+        width: 58
+        height: 91
+      alignment: 9
+      pivot: {x: 0.21197142, y: 0.07707063}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efbbdc96d942fb641a5e810dfa7a28ea
+      internalID: -538286551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_11
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 1657
+        width: 54
+        height: 89
+      alignment: 9
+      pivot: {x: 0.24061076, y: 0.047045074}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9343fa38e6190e44ea9eb2457d957f9c
+      internalID: 1094683002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_12
+      rect:
+        serializedVersion: 2
+        x: 865
+        y: 1661
+        width: 59
+        height: 85
+      alignment: 9
+      pivot: {x: 0.35524014, y: 0.013671875}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91ebe16e7d45f7f43b83d61184a0a7b8
+      internalID: -912919731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_13
+      rect:
+        serializedVersion: 2
+        x: 1124
+        y: 1661
+        width: 58
+        height: 82
+      alignment: 9
+      pivot: {x: 0.29477245, y: 0.015215618}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df5be13dc8a688047b3470f9e392520c
+      internalID: -1305110640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_14
+      rect:
+        serializedVersion: 2
+        x: 1375
+        y: 1661
+        width: 82
+        height: 81
+      alignment: 9
+      pivot: {x: 0.26631573, y: 0.014142072}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0ef1e8082d96264496a3bbb4c161b63
+      internalID: 1881479425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Combo2_15
+      rect:
+        serializedVersion: 2
+        x: 1634
+        y: 1660
+        width: 60
+        height: 91
+      alignment: 9
+      pivot: {x: 0.3179952, y: 0.013190301}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18dc5da266a45814bae61a8094a9ee7c
+      internalID: -995430083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +434,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Combo2_0: -979515774
+      Combo2_1: 984908210
+      Combo2_10: -538286551
+      Combo2_11: 1094683002
+      Combo2_12: -912919731
+      Combo2_13: -1305110640
+      Combo2_14: 1881479425
+      Combo2_15: -995430083
+      Combo2_2: 680370890
+      Combo2_3: -1572232350
+      Combo2_4: 1706571142
+      Combo2_5: 826038830
+      Combo2_6: 700263208
+      Combo2_7: 418162637
+      Combo2_8: -1292337618
+      Combo2_9: 1090979387
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

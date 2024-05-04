@@ -5,10 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Character MyCharacter;
-    
-    
-  
+    public Character MyCharacter;  
     void Start()
     {
        
@@ -18,40 +15,40 @@ public class PlayerController : MonoBehaviour
     void Update()
     {    
           
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            MyCharacter.Attack();
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.A) && MyCharacter.Change_state_able == true)
-            {
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    MyCharacter.Run(Character.Direction.Left);
-                }
-                else
-                {
-                    MyCharacter.Walk(Character.Direction.Left);
-                }
-            }
-            else if (Input.GetKey(KeyCode.D) && MyCharacter.Change_state_able == true)
-            {
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    MyCharacter.Run(Character.Direction.Right);
-                }
-                else
-                {
-                    MyCharacter.Walk(Character.Direction.Right);
-                }
-            }
-            else if( MyCharacter.Change_state_able == true)
-            {
-                MyCharacter.idle();            
-            }
+        //if (Input.GetKeyDown(KeyCode.J))
+        //{
            
-        }
+        //}
+        //else
+        //{
+        //    if (Input.GetKey(KeyCode.A) && MyCharacter.Change_state_able == true)
+        //    {
+        //        if (Input.GetKey(KeyCode.LeftShift))
+        //        {
+        //            MyCharacter.Run(Character.Direction.Left);
+        //        }
+        //        else
+        //        {
+        //            MyCharacter.Walk(Character.Direction.Left);
+        //        }
+        //    }
+        //    else if (Input.GetKey(KeyCode.D) && MyCharacter.Change_state_able == true)
+        //    {
+        //        if (Input.GetKey(KeyCode.LeftShift))
+        //        {
+        //            MyCharacter.Run(Character.Direction.Right);
+        //        }
+        //        else
+        //        {
+        //            MyCharacter.Walk(Character.Direction.Right);
+        //        }
+        //    }
+        //    else if( MyCharacter.Change_state_able == true)
+        //    {
+        //        MyCharacter.idle();            
+        //    }
+           
+        //}
        
     }
     public Character GetCharacter() 
