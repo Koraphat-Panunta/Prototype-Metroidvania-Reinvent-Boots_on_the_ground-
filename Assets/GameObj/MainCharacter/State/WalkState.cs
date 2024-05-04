@@ -14,7 +14,14 @@ public class WalkState : State
     }
     public override void EnterState()
     {
-        Animation.Play("Walk");
+        if (Character.Sprint.IsExit == true)
+        {
+            Animation.Play("Post-Run");
+        }
+        else
+        {
+            Animation.Play("Walk");
+        }
         base.EnterState();
     }
     public override void ExitState()
@@ -23,6 +30,13 @@ public class WalkState : State
     }
     public override void FrameUpdateState()
     {
+        if (Animation.GetCurrentAnimatorStateInfo(0).IsName("Post-Run"))
+        {
+            if (Animation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                Animation.Play("Walk");
+            }
+        }
         base.FrameUpdateState();
     }
     public override void PhysicUpdateState()

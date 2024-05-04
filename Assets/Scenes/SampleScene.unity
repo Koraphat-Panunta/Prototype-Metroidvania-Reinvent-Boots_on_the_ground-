@@ -802,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 31332bd8031941a4896ef8b9b8faba4e, type: 2}
     - target: {fileID: 1078848047332479395, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
       propertyPath: m_LinearDrag
-      value: 1.89
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1078848047332479395, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
       propertyPath: m_Constraints

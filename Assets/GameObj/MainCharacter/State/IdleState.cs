@@ -11,11 +11,25 @@ public class IdleState : State
     }
     public override void EnterState()
     {
-        Animation.Play("Idle");      
+        if (Character.Sprint.IsExit == true)
+        {
+            Animation.Play("Post-Run");
+        }
+        else
+        {
+            Animation.Play("Idle");
+        }
         base.EnterState();
     }
     public override void FrameUpdateState()
     {
+        if (Animation.GetCurrentAnimatorStateInfo(0).IsName("Post-Run")) 
+        {
+            if (Animation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) 
+            {
+                Animation.Play("Idle");
+            }
+        }
         base.FrameUpdateState();
     }
     public override void PhysicUpdateState()

@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,238 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: DashAtk_0
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 1915
+        width: 70
+        height: 70
+      alignment: 9
+      pivot: {x: 0.29, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de839a5f13f6ccf4282edd0df8758d4b
+      internalID: -286606691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_1
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 1922
+        width: 76
+        height: 73
+      alignment: 9
+      pivot: {x: 0.17, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b05c79f0b32a2654f945016274a86846
+      internalID: 239293752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_2
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 1917
+        width: 103
+        height: 86
+      alignment: 9
+      pivot: {x: 0.4, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b3a3a201eb32794c823bc7c42da7649
+      internalID: -358994308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_3
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1915
+        width: 95
+        height: 121
+      alignment: 9
+      pivot: {x: 0.04, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8b933c7d6e68934eafcac6db8d91ae5
+      internalID: 1762890530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_4
+      rect:
+        serializedVersion: 2
+        x: 1137
+        y: 1916
+        width: 98
+        height: 104
+      alignment: 9
+      pivot: {x: 0.05, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1480d7779467c17458bb9060f8e3e681
+      internalID: -415255950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_5
+      rect:
+        serializedVersion: 2
+        x: 1392
+        y: 1915
+        width: 73
+        height: 110
+      alignment: 9
+      pivot: {x: 0.09, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 108483eb22874b748ac4e647377d7635
+      internalID: 973589948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_6
+      rect:
+        serializedVersion: 2
+        x: 1641
+        y: 1916
+        width: 81
+        height: 71
+      alignment: 9
+      pivot: {x: 0.15, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0a7ef0bccf4c494dbe6481085928ab6
+      internalID: 1484522513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_7
+      rect:
+        serializedVersion: 2
+        x: 1891
+        y: 1916
+        width: 80
+        height: 84
+      alignment: 9
+      pivot: {x: 0.26, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 229b1df888a2fcd4e9b2db58bf76a408
+      internalID: -476854785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_8
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 1651
+        width: 59
+        height: 79
+      alignment: 9
+      pivot: {x: 0.15176482, y: 0.09428309}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b2951256da44954b9d4f55d690b8152
+      internalID: 6693228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_9
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 1660
+        width: 57
+        height: 94
+      alignment: 9
+      pivot: {x: 0.18, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c472d2b1c500a95498c4f9755ddb213e
+      internalID: 1288356384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DashAtk_10
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 1661
+        width: 60
+        height: 91
+      alignment: 9
+      pivot: {x: 0.28, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a1242a7bf5364f49a3a7e1dd26d871a
+      internalID: 859004107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +350,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DashAtk_0: -286606691
+      DashAtk_1: 239293752
+      DashAtk_10: 859004107
+      DashAtk_2: -358994308
+      DashAtk_3: 1762890530
+      DashAtk_4: -415255950
+      DashAtk_5: 973589948
+      DashAtk_6: 1484522513
+      DashAtk_7: -476854785
+      DashAtk_8: 6693228
+      DashAtk_9: 1288356384
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

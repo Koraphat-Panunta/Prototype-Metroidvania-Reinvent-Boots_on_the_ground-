@@ -24,6 +24,8 @@ public class Character : MonoBehaviour
     private Attack_1 attack_1;
     private Attack_2 attack_2;
     private Attack_3 attack_3;
+
+    private Attack_Run attack_run;
     
     public enum Direction 
     {
@@ -45,6 +47,8 @@ public class Character : MonoBehaviour
         attack_1 = new Attack_1(MyAnimator, Player, Attack_box);
         attack_2 = new Attack_2(MyAnimator, Player, Attack_box);
         attack_3 = new Attack_3(MyAnimator, Player, Attack_box);
+
+        attack_run = new Attack_Run(MyAnimator, Player, Attack_box);
 
         CharacterStateMachine = new MainCharacterStateMachine(Idle);
         
@@ -177,6 +181,11 @@ public class Character : MonoBehaviour
             }
             else 
             {
+                if (Input.GetKey(KeyCode.J)) 
+                {
+                    Attack = attack_run;
+                    CharacterStateMachine.ChangeState(Attack);
+                }
                 if (Input.GetKey(KeyCode.LeftShift) == false)
                 {
                     if (Input.GetKey(KeyCode.A))
