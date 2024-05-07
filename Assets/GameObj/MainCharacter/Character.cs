@@ -13,6 +13,10 @@ public class Character : MonoBehaviour
     public GameObject Target;
     public Collider2D Attack_box;
     public Collider2D Hitted_box;
+    public Collider2D IsGroundbox;
+
+    private float AngularVelocity;
+    private float PreviosPositionY;
 
     public MainCharacterStateMachine CharacterStateMachine;
 
@@ -26,19 +30,24 @@ public class Character : MonoBehaviour
     private Attack_3 attack_3;
 
     private Attack_Run attack_run;
-    
+
+    private CrouchState Crouch;
+    private JumpState Jump;
+    private FallState Fall;
     public enum Direction 
     {
         Left,
         Right
     }
+    
     public Direction MyDirection;
-   
 
     void Start()
     {
         Player = gameObject;
         MyDirection = Direction.Right;
+        Attack_box.enabled = false;
+
         Idle = new IdleState(MyAnimator, Player);
         Walk = new WalkState(MyAnimator, Player);
         Sprint = new SprintState(MyAnimator, Player);
@@ -50,6 +59,10 @@ public class Character : MonoBehaviour
 
         attack_run = new Attack_Run(MyAnimator, Player, Attack_box);
 
+        Crouch = new CrouchState(MyAnimator, Player);
+        Jump = new JumpState(MyAnimator, Player);
+        Fall = new FallState(MyAnimator, Player);
+
         CharacterStateMachine = new MainCharacterStateMachine(Idle);
         
 
@@ -58,18 +71,26 @@ public class Character : MonoBehaviour
 
     // Update is called once per frame
     private void Update()
-    {
+    {   
         PerformedIdle();
         PerformedRun();
         PerformedSprint();
         PerformedAttack();
+        PerformedCrouch();
+        PerformedJump();
+        PerformedFall();
+        
         CharacterStateMachine.UpdateState();
+
+        
     }
+   
     public void FixedUpdate()
     {
         CharacterStateMachine.FixedStateUpdate();
         DirectionManagement();
-        DectionalTarget();                
+        DectionalTarget();
+        CalAngularVelocity(PreviosPositionY);
     }
     //Behavior
     
@@ -124,6 +145,10 @@ public class Character : MonoBehaviour
     {
         if (CharacterStateMachine.Current_state == Idle)
         {
+            if (Input.GetKey(KeyCode.S)) 
+            {
+                CharacterStateMachine.ChangeState(Crouch);
+            }
             if (Input.GetKey(KeyCode.A))
             {
                 MyDirection = Direction.Left;
@@ -138,7 +163,7 @@ public class Character : MonoBehaviour
             {
                 Attack = attack_1;
                 CharacterStateMachine.ChangeState(Attack);
-            }
+            }        
         }
     }
     private void PerformedRun() 
@@ -266,5 +291,59 @@ public class Character : MonoBehaviour
             }
         }
     }
-
+    private void PerformedCrouch() 
+    {
+        if(CharacterStateMachine.Current_state == Crouch) 
+        {
+            if (Input.GetKey(KeyCode.S) == false) 
+            {
+                if (Input.GetKey(KeyCode.A))
+                {
+                    MyDirection = Direction.Left;
+                    CharacterStateMachine.ChangeState(Walk);
+                }
+                else if (Input.GetKey(KeyCode.D)) 
+                {
+                    MyDirection = Direction.Right;
+                    CharacterStateMachine.ChangeState(Walk);
+                }
+                else 
+                {
+                    CharacterStateMachine.ChangeState(Idle);
+                }
+            }
+        }
+    }
+    private void PerformedJump() 
+    {
+        if(CharacterStateMachine.Current_state == Idle|| CharacterStateMachine.Current_state == Walk
+            || CharacterStateMachine.Current_state == Sprint&&(CharacterStateMachine.Current_state != Jump)) 
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) 
+            {
+                CharacterStateMachine.ChangeState(Jump);
+            }
+        }
+        if (CharacterStateMachine.Current_state == Jump)
+        {
+            if (AngularVelocity < 0)
+            {
+                CharacterStateMachine.ChangeState(Fall);
+                Debug.Log("Fall");
+            }
+        }
+    }
+    private void PerformedFall() 
+    {
+        if(MyRigidbody2D.angularVelocity < 0f) 
+        {
+            CharacterStateMachine.ChangeState(Fall);
+        }
+    }
+    
+    private void CalAngularVelocity(float PreviosFramePositipn) 
+    {
+        AngularVelocity = gameObject.transform.position.y - PreviosFramePositipn;
+        PreviosPositionY = gameObject.transform.position.y;
+    }
 }

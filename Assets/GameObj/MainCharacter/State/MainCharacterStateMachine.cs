@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainCharacterStateMachine : StateMachine
-{ 
+{
     public MainCharacterStateMachine(State state) : base(state) 
     {
         Current_state = state;
