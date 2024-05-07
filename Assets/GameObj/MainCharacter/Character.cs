@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
     public Collider2D Hitted_box;
     public Collider2D IsGroundbox;
 
-    private float AngularVelocity;
+    [SerializeField] private float AngularVelocity;
     private float PreviosPositionY;
 
     public MainCharacterStateMachine CharacterStateMachine;
@@ -28,6 +28,8 @@ public class Character : MonoBehaviour
     private Attack_1 attack_1;
     private Attack_2 attack_2;
     private Attack_3 attack_3;
+    private CrouchAttackState CrouchAttack;
+    private JumpAttack JumpAttack;
 
     private Attack_Run attack_run;
 
@@ -56,7 +58,8 @@ public class Character : MonoBehaviour
         attack_1 = new Attack_1(MyAnimator, Player, Attack_box);
         attack_2 = new Attack_2(MyAnimator, Player, Attack_box);
         attack_3 = new Attack_3(MyAnimator, Player, Attack_box);
-
+        CrouchAttack = new CrouchAttackState(MyAnimator,Player, Attack_box);
+        JumpAttack = new JumpAttack(MyAnimator, Player, Attack_box);
         attack_run = new Attack_Run(MyAnimator, Player, Attack_box);
 
         Crouch = new CrouchState(MyAnimator, Player);
@@ -273,21 +276,7 @@ public class Character : MonoBehaviour
             }
             else if (Attack.CurrentAttackPhase == AttackState.AttackPhase.None)
             {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    CharacterStateMachine.ChangeState(Walk);
-                    MyDirection = Direction.Left;
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    CharacterStateMachine.ChangeState(Walk);
-                    MyDirection = Direction.Right;
-                }
-                if (Input.anyKey == false)
-                {
-                    Debug.Log("Idle");
-                    CharacterStateMachine.ChangeState(Idle);
-                }
+                AccesstoStateCrossraod();
             }
         }
     }
@@ -295,7 +284,13 @@ public class Character : MonoBehaviour
     {
         if(CharacterStateMachine.Current_state == Crouch) 
         {
-            if (Input.GetKey(KeyCode.S) == false) 
+            if (Input.GetKeyDown(KeyCode.J)) 
+            {
+               
+                Attack = CrouchAttack;
+                CharacterStateMachine.ChangeState(Attack);
+            }
+            else if (Input.GetKey(KeyCode.S) == false) 
             {
                 if (Input.GetKey(KeyCode.A))
                 {
@@ -312,6 +307,7 @@ public class Character : MonoBehaviour
                     CharacterStateMachine.ChangeState(Idle);
                 }
             }
+            
         }
     }
     private void PerformedJump() 
@@ -326,12 +322,18 @@ public class Character : MonoBehaviour
         }
         if (CharacterStateMachine.Current_state == Jump)
         {
-            if (AngularVelocity < 0)
+            if (AngularVelocity < 0f)
             {
                 CharacterStateMachine.ChangeState(Fall);
                 Debug.Log("Fall");
             }
+            if (Input.GetKey(KeyCode.J))
+            {
+                Attack = JumpAttack;
+                CharacterStateMachine.ChangeState(Attack);
+            }
         }
+
     }
     private void PerformedFall() 
     {
@@ -339,11 +341,46 @@ public class Character : MonoBehaviour
         {
             CharacterStateMachine.ChangeState(Fall);
         }
+        if (CharacterStateMachine.Current_state == Fall)
+        {
+            if (Input.GetKey(KeyCode.J))
+            {
+                Attack = JumpAttack;
+                CharacterStateMachine.ChangeState(Attack);
+            }
+            AccesstoStateCrossraod();
+        }
     }
     
     private void CalAngularVelocity(float PreviosFramePositipn) 
     {
         AngularVelocity = gameObject.transform.position.y - PreviosFramePositipn;
         PreviosPositionY = gameObject.transform.position.y;
+    }
+    public void AccesstoStateCrossraod() 
+    {
+        if (AngularVelocity < 0)
+        {
+            CharacterStateMachine.ChangeState(Fall);
+            Debug.Log("Fall");
+        }
+        else if (Input.GetKey(KeyCode.S)) 
+        {           
+            CharacterStateMachine.ChangeState(Crouch);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            CharacterStateMachine.ChangeState(Walk);
+            MyDirection = Direction.Left;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            CharacterStateMachine.ChangeState(Walk);
+            MyDirection = Direction.Right;
+        }
+        else 
+        {
+            CharacterStateMachine.ChangeState(Idle);
+        }
     }
 }

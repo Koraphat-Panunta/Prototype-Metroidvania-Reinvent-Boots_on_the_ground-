@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: CrouchAtk_0
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 1916
+        width: 49
+        height: 74
+      alignment: 9
+      pivot: {x: 0.26, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cd3f72a479c72f4bbee18c68c21eaa1
+      internalID: 758833136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CrouchAtk_1
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 1918
+        width: 80
+        height: 70
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e97405958495fac4c963eb78ecf2c97f
+      internalID: -1346884436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CrouchAtk_2
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 1915
+        width: 61
+        height: 73
+      alignment: 9
+      pivot: {x: 0.26, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6b217e2a3e0e044790701519bab1bb5
+      internalID: -917020525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CrouchAtk_3
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 1916
+        width: 49
+        height: 74
+      alignment: 9
+      pivot: {x: 0.3, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c96aa3cec7ead4c4b9bd4de1bea5b938
+      internalID: -643231964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +203,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      CrouchAtk_0: 758833136
+      CrouchAtk_1: -1346884436
+      CrouchAtk_2: -917020525
+      CrouchAtk_3: -643231964
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

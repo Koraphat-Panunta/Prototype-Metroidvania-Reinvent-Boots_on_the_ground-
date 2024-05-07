@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: JumpAtk_0
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 1918
+        width: 59
+        height: 89
+      alignment: 9
+      pivot: {x: 0.3, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a76147fd19671f24db21eb39d6d952d0
+      internalID: 1724921183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_1
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 1925
+        width: 61
+        height: 89
+      alignment: 9
+      pivot: {x: 0.12, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35c5852246ed6b747b2995d54e09b5c7
+      internalID: 547028324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_2
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 1919
+        width: 63
+        height: 88
+      alignment: 9
+      pivot: {x: 0.41, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe8bb04c3e0fdcf4c97293323aa4a15d
+      internalID: -1211935345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_3
+      rect:
+        serializedVersion: 2
+        x: 843
+        y: 1921
+        width: 84
+        height: 87
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd2b7bcd824d6d54e945b935a2b9c847
+      internalID: 387247355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_4
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 1916
+        width: 67
+        height: 122
+      alignment: 9
+      pivot: {x: 0.24, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c62669f8c84c0a24092960ec97998586
+      internalID: 1067240025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_5
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 1889
+        width: 120
+        height: 67
+      alignment: 9
+      pivot: {x: 0.15, y: 0.29}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1aff9d5a0b863e4f91ed821efaa6a0f
+      internalID: 2089645932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_6
+      rect:
+        serializedVersion: 2
+        x: 1641
+        y: 1885
+        width: 102
+        height: 118
+      alignment: 9
+      pivot: {x: 0.13, y: 0.23}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f81f0bbcdb3a9c4498f34d4dd27071a0
+      internalID: 2138708622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JumpAtk_7
+      rect:
+        serializedVersion: 2
+        x: 1881
+        y: 1905
+        width: 84
+        height: 101
+      alignment: 9
+      pivot: {x: 0.34, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e57f0cb268cde374ba726abded078c67
+      internalID: 1172590769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +287,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      JumpAtk_0: 1724921183
+      JumpAtk_1: 547028324
+      JumpAtk_2: -1211935345
+      JumpAtk_3: 387247355
+      JumpAtk_4: 1067240025
+      JumpAtk_5: 2089645932
+      JumpAtk_6: 2138708622
+      JumpAtk_7: 1172590769
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

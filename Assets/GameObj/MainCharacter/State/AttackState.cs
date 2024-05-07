@@ -33,6 +33,7 @@ public class AttackState : State
         CurrentAttackPhase = AttackPhase.PreAttack;
         AttackFrame = 0;
         Animation.Play(AnimationName);
+        SetAttackVariable();
         base.EnterState();
     }
 
