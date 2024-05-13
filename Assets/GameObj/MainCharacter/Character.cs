@@ -4,95 +4,57 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Character : MonoBehaviour 
+public abstract class Character : MonoBehaviour
 {
-    // Start is called before the first frame update
+   //Define Component of Character
     public Animator MyAnimator;
     public Rigidbody2D MyRigidbody2D;
-    public GameObject Player;
+    public GameObject MyCharacter;
     public GameObject Target;
     public Collider2D Attack_box;
     public Collider2D Hitted_box;
     public Collider2D IsGroundbox;
 
-    [SerializeField] private float AngularVelocity;
-    private float PreviosPositionY;
-
-    public MainCharacterStateMachine CharacterStateMachine;
-
+    //Define Character State
     public IdleState Idle;
     public WalkState Walk;
     public SprintState Sprint;
-    public AttackState Attack;
+    public AttackState Attack;//Current Attack state
+    public CrouchState Crouch;
+    public JumpState Jump;
+    public FallState Fall;
+    public CharacterStateMachine CharacterStateMachine;//Define Current Character State
 
-    private Attack_1 attack_1;
-    private Attack_2 attack_2;
-    private Attack_3 attack_3;
-    private CrouchAttackState CrouchAttack;
-    private JumpAttack JumpAttack;
-
-    private Attack_Run attack_run;
-
-    private CrouchState Crouch;
-    private JumpState Jump;
-    private FallState Fall;
+    //For Calculate Angular Velocity of Character,Object
+    public float AngularVelocity { get ;private set; }
+    private float PreviosPositionY;
     public enum Direction 
     {
         Left,
         Right
     }
-    
     public Direction MyDirection;
-
-    void Start()
+    protected virtual void SetupState() 
     {
-        Player = gameObject;
+        CharacterStateMachine = new CharacterStateMachine(Idle);
+    }
+    
+    virtual protected void Start()
+    {
+        MyCharacter = gameObject;
         MyDirection = Direction.Right;
-        Attack_box.enabled = false;
-
-        Idle = new IdleState(MyAnimator, Player);
-        Walk = new WalkState(MyAnimator, Player);
-        Sprint = new SprintState(MyAnimator, Player);
-        Attack = new AttackState(MyAnimator, Player, Attack_box);
-
-        attack_1 = new Attack_1(MyAnimator, Player, Attack_box);
-        attack_2 = new Attack_2(MyAnimator, Player, Attack_box);
-        attack_3 = new Attack_3(MyAnimator, Player, Attack_box);
-        CrouchAttack = new CrouchAttackState(MyAnimator,Player, Attack_box);
-        JumpAttack = new JumpAttack(MyAnimator, Player, Attack_box);
-        attack_run = new Attack_Run(MyAnimator, Player, Attack_box);
-
-        Crouch = new CrouchState(MyAnimator, Player);
-        Jump = new JumpState(MyAnimator, Player);
-        Fall = new FallState(MyAnimator, Player);
-
-        CharacterStateMachine = new MainCharacterStateMachine(Idle);
-        
-
-        Attack_box.enabled = false;
+        SetupState();
     }
 
     // Update is called once per frame
-    private void Update()
-    {   
-        PerformedIdle();
-        PerformedRun();
-        PerformedSprint();
-        PerformedAttack();
-        PerformedCrouch();
-        PerformedJump();
-        PerformedFall();
-        
-        CharacterStateMachine.UpdateState();
-
-        
+    virtual protected void Update()
+    {
+        PerformedState();
     }
-   
-    public void FixedUpdate()
+    virtual protected void FixedUpdate()
     {
         CharacterStateMachine.FixedStateUpdate();
         DirectionManagement();
-        DectionalTarget();
         CalAngularVelocity(PreviosPositionY);
     }
     //Behavior
@@ -102,18 +64,18 @@ public class Character : MonoBehaviour
         
         if (MyDirection == Direction.Left)
         {
-           Player.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            MyCharacter.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         }
         if (MyDirection == Direction.Right)
         {
-            Player.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            MyCharacter.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         }
 
     }
    
-    private void DectionalTarget() 
+    protected void DectionalTarget(string Target_tag) 
     {
-        Vector2 Origin = new Vector2(Player.gameObject.transform.position.x, Player.gameObject.transform.position.y+0.6f);
+        Vector2 Origin = new Vector2(MyCharacter.gameObject.transform.position.x, MyCharacter.gameObject.transform.position.y+0.6f);
         Vector2 Directional;
         if (MyDirection == Direction.Left) 
         {
@@ -124,10 +86,10 @@ public class Character : MonoBehaviour
             Directional = new Vector2( 10, 0);
         }
         RaycastHit2D ThisTarget = Physics2D.Raycast(Origin,Directional,1000);
+        
         if (ThisTarget.rigidbody != null) 
-        {
-            Debug.Log("RayHit");          
-            if (ThisTarget.rigidbody.CompareTag("Enemy"))
+        {   
+            if (ThisTarget.rigidbody.CompareTag(Target_tag))
             {
                 Target = ThisTarget.rigidbody.gameObject;
             }
@@ -144,212 +106,46 @@ public class Character : MonoBehaviour
 
 
     }
-    private void PerformedIdle() 
+    virtual protected void PerformedState() 
     {
-        if (CharacterStateMachine.Current_state == Idle)
-        {
-            if (Input.GetKey(KeyCode.S)) 
-            {
-                CharacterStateMachine.ChangeState(Crouch);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                MyDirection = Direction.Left;
-                CharacterStateMachine.ChangeState(Walk);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                MyDirection = Direction.Right;
-                CharacterStateMachine.ChangeState(Walk);
-            }
-            if (Input.GetKey(KeyCode.J)) 
-            {
-                Attack = attack_1;
-                CharacterStateMachine.ChangeState(Attack);
-            }        
-        }
+        PerformedIdle();
+        PerformedRun();
+        PerformedSprint();
+        PerformedAttack();
+        PerformedCrouch();
+        PerformedJump();
+        PerformedFall();
+        CharacterStateMachine.UpdateState();
     }
-    private void PerformedRun() 
+    virtual protected void PerformedIdle() 
     {
-        if (CharacterStateMachine.Current_state == Walk)
-        {
-            if (Input.anyKey == false)
-            {
-                CharacterStateMachine.ChangeState(Idle);
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.LeftShift)) 
-                {
-                    CharacterStateMachine.ChangeState(Sprint);
-                }
-                if (Input.GetKey(KeyCode.A))
-                {
-                    MyDirection = Direction.Left;
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    MyDirection = Direction.Right;
-                }
-                if (Input.GetKey(KeyCode.J))
-                {
-                    Attack = attack_1;
-                    CharacterStateMachine.ChangeState(Attack);
-                }
-            }
-        }
+        
     }
-    private void PerformedSprint() 
+    virtual protected void PerformedRun() 
     {
-        if(CharacterStateMachine.Current_state == Sprint) 
-        {
-            if (Input.anyKey == false)
-            {
-                CharacterStateMachine.ChangeState(Idle);
-            }
-            else 
-            {
-                if (Input.GetKey(KeyCode.J)) 
-                {
-                    Attack = attack_run;
-                    CharacterStateMachine.ChangeState(Attack);
-                }
-                if (Input.GetKey(KeyCode.LeftShift) == false)
-                {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        CharacterStateMachine.ChangeState(Walk);
-                        MyDirection = Direction.Left;
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        CharacterStateMachine.ChangeState(Walk);
-                        MyDirection = Direction.Right;
-                    }
-                }
-                else 
-                {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        MyDirection = Direction.Left;
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        MyDirection = Direction.Right;
-                    }
-                }
-            }
-           
-        }
+        
     }
-    private void PerformedAttack() 
+    virtual protected void PerformedSprint() 
     {
-        if(CharacterStateMachine.Current_state == Attack) 
-        {
-            if(Attack.CurrentAttackPhase == AttackState.AttackPhase.PreAttack) 
-            {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    MyDirection = Direction.Left;
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    MyDirection = Direction.Right;
-                }
-            }
-            else if(Attack.CurrentAttackPhase == AttackState.AttackPhase.PostAttack) 
-            {
-                if (Input.GetKey(KeyCode.J)) 
-                {
-                    if (Attack == attack_1) 
-                    {
-                        Attack = attack_2;
-                        CharacterStateMachine.ChangeState(Attack);
-                    }
-                    else if(Attack == attack_2) 
-                    {
-                        Attack = attack_3;
-                        CharacterStateMachine.ChangeState(Attack);
-                    }
-                }
-                
-            }
-            else if (Attack.CurrentAttackPhase == AttackState.AttackPhase.None)
-            {
-                AccesstoStateCrossraod();
-            }
-        }
+       
     }
-    private void PerformedCrouch() 
+    virtual protected void PerformedAttack() 
     {
-        if(CharacterStateMachine.Current_state == Crouch) 
-        {
-            if (Input.GetKeyDown(KeyCode.J)) 
-            {
-               
-                Attack = CrouchAttack;
-                CharacterStateMachine.ChangeState(Attack);
-            }
-            else if (Input.GetKey(KeyCode.S) == false) 
-            {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    MyDirection = Direction.Left;
-                    CharacterStateMachine.ChangeState(Walk);
-                }
-                else if (Input.GetKey(KeyCode.D)) 
-                {
-                    MyDirection = Direction.Right;
-                    CharacterStateMachine.ChangeState(Walk);
-                }
-                else 
-                {
-                    CharacterStateMachine.ChangeState(Idle);
-                }
-            }
-            
-        }
+        
+        
     }
-    private void PerformedJump() 
+    virtual protected void PerformedCrouch() 
     {
-        if(CharacterStateMachine.Current_state == Idle|| CharacterStateMachine.Current_state == Walk
-            || CharacterStateMachine.Current_state == Sprint&&(CharacterStateMachine.Current_state != Jump)) 
-        {
-            if (Input.GetKeyDown(KeyCode.Space)) 
-            {
-                CharacterStateMachine.ChangeState(Jump);
-            }
-        }
-        if (CharacterStateMachine.Current_state == Jump)
-        {
-            if (AngularVelocity < 0f)
-            {
-                CharacterStateMachine.ChangeState(Fall);
-                Debug.Log("Fall");
-            }
-            if (Input.GetKey(KeyCode.J))
-            {
-                Attack = JumpAttack;
-                CharacterStateMachine.ChangeState(Attack);
-            }
-        }
+       
+    }
+    virtual protected void PerformedJump() 
+    {
+       
 
     }
-    private void PerformedFall() 
+    virtual protected void PerformedFall() 
     {
-        if(MyRigidbody2D.angularVelocity < 0f) 
-        {
-            CharacterStateMachine.ChangeState(Fall);
-        }
-        if (CharacterStateMachine.Current_state == Fall)
-        {
-            if (Input.GetKey(KeyCode.J))
-            {
-                Attack = JumpAttack;
-                CharacterStateMachine.ChangeState(Attack);
-            }
-            AccesstoStateCrossraod();
-        }
+        
     }
     
     private void CalAngularVelocity(float PreviosFramePositipn) 
@@ -357,30 +153,8 @@ public class Character : MonoBehaviour
         AngularVelocity = gameObject.transform.position.y - PreviosFramePositipn;
         PreviosPositionY = gameObject.transform.position.y;
     }
-    public void AccesstoStateCrossraod() 
+    virtual public void AccesstoStateCrossraod() 
     {
-        if (AngularVelocity < 0)
-        {
-            CharacterStateMachine.ChangeState(Fall);
-            Debug.Log("Fall");
-        }
-        else if (Input.GetKey(KeyCode.S)) 
-        {           
-            CharacterStateMachine.ChangeState(Crouch);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            CharacterStateMachine.ChangeState(Walk);
-            MyDirection = Direction.Left;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            CharacterStateMachine.ChangeState(Walk);
-            MyDirection = Direction.Right;
-        }
-        else 
-        {
-            CharacterStateMachine.ChangeState(Idle);
-        }
+        
     }
 }

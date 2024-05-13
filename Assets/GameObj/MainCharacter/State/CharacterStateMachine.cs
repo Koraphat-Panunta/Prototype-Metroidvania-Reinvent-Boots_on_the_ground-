@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainCharacterStateMachine : StateMachine
+public class CharacterStateMachine : StateMachine
 {
-    public MainCharacterStateMachine(State state) : base(state) 
+    public CharacterStateMachine(State state) : base(state) 
     {
-        Current_state = state;
+        ChangeState(state);
     }
     public override void UpdateState()
     {

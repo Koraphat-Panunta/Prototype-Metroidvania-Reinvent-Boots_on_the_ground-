@@ -11,13 +11,20 @@ public class IdleState : State
     }
     public override void EnterState()
     {
-        if (Character.Sprint.IsExit == true)
+        if (Character.Sprint == null)
         {
-            Animation.Play("Post-Run");
+            Animation.Play("Idle");
         }
         else
         {
-            Animation.Play("Idle");
+            if (Character.Sprint.IsExit == true)
+            {
+                Animation.Play("Post-Run");
+            }
+            else
+            {
+                Animation.Play("Idle");
+            }
         }
         base.EnterState();
     }

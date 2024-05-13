@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1078848047332479395}
   - component: {fileID: 4098033662299357317}
   - component: {fileID: 501724405548343172}
-  - component: {fileID: 6305055144476417301}
+  - component: {fileID: 5383008646589083075}
   m_Layer: 2
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -173,7 +173,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6305055144476417301
+--- !u!114 &5383008646589083075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,17 +182,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1142575252726139532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d81132dc0f1fee949b102d298f4406b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 94a2eed96db842748bbad88c544ff333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MyAnimator: {fileID: 501724405548343172}
   MyRigidbody2D: {fileID: 1078848047332479395}
-  Player: {fileID: 1142575252726139532}
+  MyCharacter: {fileID: 1142575252726139532}
   Target: {fileID: 0}
   Attack_box: {fileID: 8728174498772638620}
-  Hitted_box: {fileID: 8728174498772638620}
-  IsGroundbox: {fileID: 0}
-  AngularVelocity: 0
+  Hitted_box: {fileID: 4098033662299357317}
+  IsGroundbox: {fileID: 439648387505239384}
   MyDirection: 0
 --- !u!1 &3244023455796419122
 GameObject:
@@ -327,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83822b7ed49c854bbc180ef147b0de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 6305055144476417301}
+  Character: {fileID: 0}
   FootsCollider: {fileID: 0}
   isground: 0
 --- !u!1 &6705220188532404981
