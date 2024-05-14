@@ -43,6 +43,7 @@ public abstract class Character : MonoBehaviour
     {
         MyCharacter = gameObject;
         MyDirection = Direction.Right;
+        Attack_box.enabled = false;
         SetupState();
     }
 
@@ -73,38 +74,34 @@ public abstract class Character : MonoBehaviour
 
     }
    
-    protected void DectionalTarget(string Target_tag) 
+    virtual protected void DectionalTarget(string Target_tag) 
     {
-        Vector2 Origin = new Vector2(MyCharacter.gameObject.transform.position.x, MyCharacter.gameObject.transform.position.y+0.6f);
+        Vector2 Origin = new Vector2(MyCharacter.gameObject.transform.position.x, MyCharacter.gameObject.transform.position.y + 0.6f);
         Vector2 Directional;
-        if (MyDirection == Direction.Left) 
+        if (MyDirection == Direction.Left)
         {
             Directional = new Vector2(-10, 0);
         }
-        else 
-        {
-            Directional = new Vector2( 10, 0);
-        }
-        RaycastHit2D ThisTarget = Physics2D.Raycast(Origin,Directional,1000);
-        
-        if (ThisTarget.rigidbody != null) 
-        {   
-            if (ThisTarget.rigidbody.CompareTag(Target_tag))
-            {
-                Target = ThisTarget.rigidbody.gameObject;
-            }
-            else
-            {
-                Target = null;
-            }
-        }
         else
         {
-            Target = null;
+            Directional = new Vector2(10, 0);
         }
-        Debug.DrawRay(Origin, Directional, Color.green) ;
-
-
+        if (Target == null)
+        {
+            RaycastHit2D[] result = Physics2D.RaycastAll(Origin, Directional, 1000);
+            if (result.Length > 0)
+            {
+                foreach (RaycastHit2D r in result)
+                {
+                    if (r.rigidbody.CompareTag(Target_tag))
+                    {
+                        Target = r.rigidbody.gameObject;
+                        break;
+                    }
+                }
+            }
+        }
+            Debug.DrawRay(Origin, Directional, Color.green);  
     }
     virtual protected void PerformedState() 
     {

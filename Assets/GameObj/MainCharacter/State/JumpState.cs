@@ -33,7 +33,7 @@ public class JumpState : State
 
     public override void FrameUpdateState()
     {
-        float Jumpforce = 300;
+        float Jumpforce = 700;
         Aniamtion_frame += 1;
         if(Aniamtion_frame == 5) 
         {

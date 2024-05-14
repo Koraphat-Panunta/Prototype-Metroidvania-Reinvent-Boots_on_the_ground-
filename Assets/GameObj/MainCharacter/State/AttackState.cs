@@ -22,7 +22,7 @@ public class AttackState : State
 
     protected string AnimationName; //Override
 
-    protected float AttackFrame;
+    public float AttackFrame { get; protected set; }
     public AttackState(Animator animator, GameObject Char,Collider2D Hitbox) : base(animator, Char)
     {
         AttackBox = Hitbox;

@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    protected float Pressure = 0;
+    [SerializeField] protected float Pressure = 0;
     public float Distance;
+
+    private AttackNormal_1 AttackNormal1;
+    private WalkBack WalkBack;
     public enum Enemy_Role 
     {
         Stand,
@@ -18,6 +21,10 @@ public class Enemy : Character
     {
         Idle = new IdleState(MyAnimator,MyCharacter);
         Walk = new WalkState(MyAnimator,MyCharacter);
+        WalkBack = new WalkBack(MyAnimator,MyCharacter);
+        Attack = new AttackState(MyAnimator,MyCharacter,Attack_box);   
+
+        AttackNormal1 = new AttackNormal_1 (MyAnimator,MyCharacter,Attack_box);
         base.SetupState();
     }
     protected override void Start()
@@ -32,9 +39,20 @@ public class Enemy : Character
     }
     protected override void FixedUpdate()
     {
+        if (Pressure > 0)
+        {
+            if (CharacterStateMachine.Current_state != Attack)
+            {
+                Pressure -= 0.5f;
+            }
+        }
         if (Pressure < 30) 
         {
             CurrentEnemyRole = Enemy_Role.Chaseplayer;
+        }
+        else if(Pressure >= 70) 
+        {
+            CurrentEnemyRole = Enemy_Role.Reteat;
         }
         DectionalTarget("Player");
         CalculateDistanceTarget();
@@ -63,7 +81,10 @@ public class Enemy : Character
         }
         if(CurrentEnemyRole == Enemy_Role.Reteat) 
         {
-            
+            if(CharacterStateMachine.Current_state == Walk) 
+            {
+                CharacterStateMachine.ChangeState(WalkBack);
+            }
         }
         if(CurrentEnemyRole == Enemy_Role.Chaseplayer) 
         {
@@ -81,15 +102,74 @@ public class Enemy : Character
                     }
                     CharacterStateMachine.ChangeState(Walk);
                 }
+                if(Distance < 1) 
+                {
+                    Attack = AttackNormal1;
+                    CharacterStateMachine.ChangeState(Attack);
+                }
             }
             if(CharacterStateMachine.Current_state == Walk) 
             {
-                if(Distance < 1) 
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                {
+                    MyDirection = Direction.Left;
+                }
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                {
+                    MyDirection = Direction.Right;
+                }
+                if (Distance < 1) 
                 {
                     CharacterStateMachine.ChangeState(Idle);
                 }
             }
+            if(CharacterStateMachine.Current_state == WalkBack) 
+            {
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                {
+                    MyDirection = Direction.Left;
+                }
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                {
+                    MyDirection = Direction.Right;
+                }
+                CharacterStateMachine.ChangeState(Walk);
+            }
         }
     }
+    protected override void PerformedAttack()
+    {
+        if(CharacterStateMachine.Current_state == Attack) 
+        {
+            if (Attack.IsExit == true) 
+            {
+                AccesstoStateCrossraod();
+            }
+            if(Attack.IsEnter == true) 
+            {
+                Pressure += 25;
+            }
+        }
+        base.PerformedAttack();
+    }
+    public override void AccesstoStateCrossraod()
+    {
+        if(CurrentEnemyRole == Enemy_Role.Stand) 
+        {
+            CharacterStateMachine.ChangeState(Idle);
+        }
+        if(CurrentEnemyRole == Enemy_Role.Chaseplayer) 
+        {
+            CharacterStateMachine.ChangeState(Walk);
+        }
+        if(CurrentEnemyRole == Enemy_Role.Reteat) 
+        {
+            CharacterStateMachine.ChangeState(WalkBack);
+        }
+        
+ 
+        base.AccesstoStateCrossraod();
+    }
     
+
 }

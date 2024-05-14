@@ -181,7 +181,7 @@ public class Player : Character
                 }
 
             }
-            else if (Attack.CurrentAttackPhase == AttackState.AttackPhase.None)
+            else if (Attack.IsExit == true)
             {
                 AccesstoStateCrossraod();
             }
@@ -250,12 +250,15 @@ public class Player : Character
         }
         if (CharacterStateMachine.Current_state == Fall)
         {
-            if (Input.GetKey(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J))
             {
                 Attack = JumpAttack;
                 CharacterStateMachine.ChangeState(Attack);
             }
-            AccesstoStateCrossraod();
+            if (CharacterStateMachine.Current_state == Fall)
+            {
+                AccesstoStateCrossraod();
+            }
         }
     }
     override public void AccesstoStateCrossraod()
