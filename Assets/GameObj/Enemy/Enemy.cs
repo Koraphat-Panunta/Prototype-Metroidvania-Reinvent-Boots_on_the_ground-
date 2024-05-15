@@ -83,7 +83,26 @@ public class Enemy : Character
         {
             if(CharacterStateMachine.Current_state == Walk) 
             {
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                {
+                    MyDirection = Direction.Left;
+                }
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                {
+                    MyDirection = Direction.Right;
+                }
                 CharacterStateMachine.ChangeState(WalkBack);
+            }
+            if (CharacterStateMachine.Current_state == WalkBack)
+            {
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                {
+                    MyDirection = Direction.Left;
+                }
+                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                {
+                    MyDirection = Direction.Right;
+                }
             }
         }
         if(CurrentEnemyRole == Enemy_Role.Chaseplayer) 
