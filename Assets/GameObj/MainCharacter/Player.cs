@@ -1,6 +1,7 @@
 using Assets.GameObj.MainCharacter.State;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Player : Character
@@ -43,6 +44,29 @@ public class Player : Character
     override protected void FixedUpdate()
     {
         DectionalTarget("Enemy");
+        List<Collider2D> colliders = new List<Collider2D>();
+        MyRigidbody2D.GetContacts(colliders);
+        if (colliders.Count > 0)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.CompareTag("Ground")) 
+                {
+                    Isground = true;
+                    FootsAngle = collider.transform.rotation.eulerAngles.z;
+                    break;
+                }
+                else 
+                {
+                    Isground = false;
+                }
+            }
+        }
+        else 
+        {
+            Isground = false;
+        }
+       
         base.FixedUpdate();
     }
     protected override void PerformedState()
@@ -232,7 +256,6 @@ public class Player : Character
             if (AngularVelocity < 0f)
             {
                 CharacterStateMachine.ChangeState(Fall);
-                Debug.Log("Fall");
             }
             if (Input.GetKey(KeyCode.J))
             {
@@ -244,7 +267,7 @@ public class Player : Character
     }
     override protected void PerformedFall()
     {
-        if (MyRigidbody2D.angularVelocity < 0f)
+        if (AngularVelocity < 0 && CharacterStateMachine.Current_state != Attack&&Isground == false)
         {
             CharacterStateMachine.ChangeState(Fall);
         }
@@ -255,19 +278,16 @@ public class Player : Character
                 Attack = JumpAttack;
                 CharacterStateMachine.ChangeState(Attack);
             }
-            if (CharacterStateMachine.Current_state == Fall)
+            if (CharacterStateMachine.Current_state == Fall&& Isground == true)
             {
                 AccesstoStateCrossraod();
             }
         }
+
     }
     override public void AccesstoStateCrossraod()
     {
-        if (AngularVelocity < 0)
-        {
-            CharacterStateMachine.ChangeState(Fall);
-        }
-        else if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
             CharacterStateMachine.ChangeState(Crouch);
         }
@@ -281,7 +301,7 @@ public class Player : Character
             CharacterStateMachine.ChangeState(Walk);
             MyDirection = Direction.Right;
         }
-        else
+        else if(Isground == true)
         {
             CharacterStateMachine.ChangeState(Idle);
         }

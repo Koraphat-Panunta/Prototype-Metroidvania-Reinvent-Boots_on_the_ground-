@@ -82,4 +82,8 @@ public class WalkBack : State
         CurrentSpeed = rb.velocity.x;
         base.PhysicUpdateState();
     }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.Full;
+    }
 }

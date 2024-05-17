@@ -10,14 +10,15 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         Camera = GetComponent<Camera>();
+        Camera.transform.position = new Vector3(Camera.transform.position.x, Camera.transform.position.y, -100);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 CameraPos = Camera.transform.position;
-        Vector2 TargetPos = CameraTarget.transform.position;
+        Vector3 CameraPos = Camera.transform.position;
+        Vector3 TargetPos = new Vector3(CameraTarget.transform.position.x, CameraTarget.transform.position.y, -100);
         float SpeedSnap = 3f*Time.deltaTime;
-        Camera.transform.position = Vector2.Lerp(CameraPos, TargetPos, SpeedSnap);
+        Camera.transform.position = Vector3.Lerp(CameraPos, TargetPos, SpeedSnap);
     }
 }

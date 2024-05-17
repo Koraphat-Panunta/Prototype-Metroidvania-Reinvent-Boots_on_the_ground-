@@ -85,4 +85,8 @@ public class AttackState : State
     {
         
     }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.None;
+    }
 }

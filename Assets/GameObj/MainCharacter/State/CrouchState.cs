@@ -25,4 +25,8 @@ public class CrouchState : State
     {
         base.PhysicUpdateState();
     }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.Full;
+    }
 }

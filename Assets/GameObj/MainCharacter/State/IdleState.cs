@@ -47,4 +47,8 @@ public class IdleState : State
     {        
         base.ExitState();
     }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.Full;
+    }
 }

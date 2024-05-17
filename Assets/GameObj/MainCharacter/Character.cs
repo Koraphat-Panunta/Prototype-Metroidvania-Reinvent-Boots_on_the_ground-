@@ -2,6 +2,7 @@ using Assets.GameObj.MainCharacter.State;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
@@ -14,6 +15,7 @@ public abstract class Character : MonoBehaviour
     public Collider2D Attack_box;
     public Collider2D Hitted_box;
     public Collider2D IsGroundbox;
+    public GameObject Raypoint;
 
     //Define Character State
     public IdleState Idle;
@@ -26,8 +28,11 @@ public abstract class Character : MonoBehaviour
     public CharacterStateMachine CharacterStateMachine;//Define Current Character State
 
     //For Calculate Angular Velocity of Character,Object
-    public float AngularVelocity { get ;private set; }
+    [SerializeField] public float AngularVelocity;
     private float PreviosPositionY;
+
+    public bool Isground;
+    [SerializeField] public float FootsAngle;
     public enum Direction 
     {
         Left,
@@ -51,9 +56,11 @@ public abstract class Character : MonoBehaviour
     virtual protected void Update()
     {
         PerformedState();
+       
     }
     virtual protected void FixedUpdate()
     {
+        
         CharacterStateMachine.FixedStateUpdate();
         DirectionManagement();
         CalAngularVelocity(PreviosPositionY);
@@ -76,32 +83,25 @@ public abstract class Character : MonoBehaviour
    
     virtual protected void DectionalTarget(string Target_tag) 
     {
-        Vector2 Origin = new Vector2(MyCharacter.gameObject.transform.position.x, MyCharacter.gameObject.transform.position.y + 0.6f);
+        Vector2 Origin = new Vector2(Raypoint.gameObject.transform.position.x, Raypoint.gameObject.transform.position.y);
         Vector2 Directional;
         if (MyDirection == Direction.Left)
         {
-            Directional = new Vector2(-10, 0);
+            Directional = new Vector3(-10, 0);
         }
         else
         {
-            Directional = new Vector2(10, 0);
+            Directional = new Vector3(10, 0);
         }
-        if (Target == null)
+        RaycastHit2D result = Physics2D.Raycast(Origin, Directional,1000);
+        if (result.rigidbody != null)
         {
-            RaycastHit2D[] result = Physics2D.RaycastAll(Origin, Directional, 1000);
-            if (result.Length > 0)
+            if (result.rigidbody.CompareTag(Target_tag))
             {
-                foreach (RaycastHit2D r in result)
-                {
-                    if (r.rigidbody.CompareTag(Target_tag))
-                    {
-                        Target = r.rigidbody.gameObject;
-                        break;
-                    }
-                }
+                Target = result.rigidbody.gameObject;
             }
         }
-            Debug.DrawRay(Origin, Directional, Color.green);  
+        Debug.DrawRay(Origin, Directional);
     }
     virtual protected void PerformedState() 
     {

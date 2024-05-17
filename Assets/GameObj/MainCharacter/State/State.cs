@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,6 +11,14 @@ public abstract class State
     protected Animator Animation;
     protected GameObject ObjCharacter;
     protected Character Character;
+
+    public enum stateAbleToBypass
+    {
+        Full,
+        Semi,
+        None
+    }
+    public stateAbleToBypass StateLevle { get;protected set; }
     public State(Animator animator,GameObject Char) 
     {
         Animation = animator;
@@ -48,4 +57,6 @@ public abstract class State
         IsEnter = false;
         IsExit = true;
     }
+    protected abstract void SetStateLevel();//Set a state Level that let other state to bypass
+   
 }

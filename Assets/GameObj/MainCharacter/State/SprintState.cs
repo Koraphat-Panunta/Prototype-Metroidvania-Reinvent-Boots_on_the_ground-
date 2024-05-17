@@ -82,4 +82,9 @@ public class SprintState : State
         base.PhysicUpdateState();
         base.PhysicUpdateState();
     }
+
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.Full;
+    }
 }

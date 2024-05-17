@@ -8,10 +8,14 @@ public class WalkState : State
     private float TopSpeed = 10;
     private float AcceletorSpeed = 6;
     private Rigidbody2D rb;
+
+    
     public WalkState(Animator animator, GameObject Char) : base(animator, Char)
     {
         rb = Char.GetComponent<Rigidbody2D>();
+        
     }
+
     public override void EnterState()
     {
         if (Character.Sprint != null)
@@ -53,7 +57,7 @@ public class WalkState : State
         {           
             if(rb.velocity.x > -TopSpeed) 
             {
-                rb.AddForce(new Vector2(-rb.mass * AcceletorSpeed, 0));
+                rb.AddForce(new Vector2(-rb.mass * AcceletorSpeed,0));
             }
             else if(rb.velocity.x < -TopSpeed - SpeedDeadZone) 
             {
@@ -68,7 +72,7 @@ public class WalkState : State
         {
             if (rb.velocity.x < TopSpeed)
             {
-                rb.AddForce(new Vector2(rb.mass * AcceletorSpeed, 0));
+                rb.AddForce(new Vector2(rb.mass * AcceletorSpeed, rb.mass * AcceletorSpeed));
             }
             else if (rb.velocity.x >TopSpeed + SpeedDeadZone)
             {
@@ -76,10 +80,14 @@ public class WalkState : State
             }
             else
             {
-                rb.velocity = new Vector2(TopSpeed, 0);
+                rb.velocity = new Vector2(TopSpeed, TopSpeed);
             }
         }
         CurrentSpeed = rb.velocity.x;
         base.PhysicUpdateState();
+    }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.Full;
     }
 }

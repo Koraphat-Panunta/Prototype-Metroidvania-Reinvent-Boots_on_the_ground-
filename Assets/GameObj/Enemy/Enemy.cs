@@ -54,10 +54,10 @@ public class Enemy : Character
         {
             CurrentEnemyRole = Enemy_Role.Reteat;
         }
-        DectionalTarget("Player");
         CalculateDistanceTarget();
         RoleManager();
         base.FixedUpdate();
+        DectionalTarget("Player");
     }
     protected override void PerformedState()
     {
@@ -83,33 +83,7 @@ public class Enemy : Character
         {
             if(CharacterStateMachine.Current_state == Walk) 
             {
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
-                {
-                    MyDirection = Direction.Left;
-                }
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
-                {
-                    MyDirection = Direction.Right;
-                }
-                CharacterStateMachine.ChangeState(WalkBack);
-            }
-            if (CharacterStateMachine.Current_state == WalkBack)
-            {
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
-                {
-                    MyDirection = Direction.Left;
-                }
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
-                {
-                    MyDirection = Direction.Right;
-                }
-            }
-        }
-        if(CurrentEnemyRole == Enemy_Role.Chaseplayer) 
-        {
-            if(CharacterStateMachine.Current_state == Idle) 
-            {
-                if (Distance > 1)
+                if (Target != null)
                 {
                     if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
                     {
@@ -119,23 +93,64 @@ public class Enemy : Character
                     {
                         MyDirection = Direction.Right;
                     }
+                }
+                CharacterStateMachine.ChangeState(WalkBack);
+            }
+            if (CharacterStateMachine.Current_state == WalkBack)
+            {
+                if (Target != null)
+                {
+                    if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                    {
+                        MyDirection = Direction.Left;
+                    }
+                    if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                    {
+                        MyDirection = Direction.Right;
+                    }
+                }
+            }
+        }
+        if(CurrentEnemyRole == Enemy_Role.Chaseplayer) 
+        {
+            if(CharacterStateMachine.Current_state == Idle) 
+            {
+                if (Distance > 1)
+                {
+                    if (Target != null)
+                    {
+                        if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                        {
+                            MyDirection = Direction.Left;
+                        }
+                        if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                        {
+                            MyDirection = Direction.Right;
+                        }
+                    }
                     CharacterStateMachine.ChangeState(Walk);
                 }
-                if(Distance < 1) 
+                else if(Distance < 1)
                 {
-                    Attack = AttackNormal1;
-                    CharacterStateMachine.ChangeState(Attack);
+                    if (Target != null)
+                    {
+                        Attack = AttackNormal1;
+                        CharacterStateMachine.ChangeState(Attack);
+                    }
                 }
             }
             if(CharacterStateMachine.Current_state == Walk) 
             {
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                if (Target != null)
                 {
-                    MyDirection = Direction.Left;
-                }
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
-                {
-                    MyDirection = Direction.Right;
+                    if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                    {
+                        MyDirection = Direction.Left;
+                    }
+                    if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                    {
+                        MyDirection = Direction.Right;
+                    }
                 }
                 if (Distance < 1) 
                 {
@@ -144,13 +159,16 @@ public class Enemy : Character
             }
             if(CharacterStateMachine.Current_state == WalkBack) 
             {
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                if (Target != null)
                 {
-                    MyDirection = Direction.Left;
-                }
-                if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
-                {
-                    MyDirection = Direction.Right;
+                    if ((MyCharacter.transform.position.x - Target.transform.position.x) > 0)
+                    {
+                        MyDirection = Direction.Left;
+                    }
+                    if ((MyCharacter.transform.position.x - Target.transform.position.x) < 0)
+                    {
+                        MyDirection = Direction.Right;
+                    }
                 }
                 CharacterStateMachine.ChangeState(Walk);
             }

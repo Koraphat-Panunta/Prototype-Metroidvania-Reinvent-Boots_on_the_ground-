@@ -47,4 +47,8 @@ public class JumpState : State
     {
         base.PhysicUpdateState();
     }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.None;
+    }
 }

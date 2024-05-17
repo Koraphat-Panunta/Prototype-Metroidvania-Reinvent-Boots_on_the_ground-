@@ -26,4 +26,8 @@ public class FallState :State
     {
         base.PhysicUpdateState();
     }
+    protected override void SetStateLevel()
+    {
+        base.StateLevle = stateAbleToBypass.Semi;
+    }
 }
