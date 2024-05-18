@@ -12,22 +12,9 @@ public class IsGround : MonoBehaviour
 
     private void Update()
     {
-        //if (Physics2D.OverlapCircle(gameObject.transform.position, 0.001f,GroundLayer))        
-        //{
-        //    Character.Isground = true;
-        //}
-        //else 
-        //{
-        //    Character.Isground= false;
-        //}
+        
     }
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Ground"))
-    //    {
-    //        Character.AccesstoStateCrossraod();
-           
-    //    }
-    //}
+    
+    
 
 }

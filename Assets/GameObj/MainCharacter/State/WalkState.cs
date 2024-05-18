@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WalkState : State
 {
-    private float CurrentSpeed;
-    private float TopSpeed = 10;
-    private float AcceletorSpeed = 6;
+    private float TopSpeed = 2;
+    private float AcceletorSpeed = 0.2f;
+    private float DeceletorSpeed = 0.2f;
     private Rigidbody2D rb;
 
     
@@ -52,38 +52,29 @@ public class WalkState : State
     }
     public override void PhysicUpdateState()
     {
-        float SpeedDeadZone = 1;
         if(Character.MyDirection == Character.Direction.Left) 
         {           
-            if(rb.velocity.x > -TopSpeed) 
+            if(Character.Velocity > -TopSpeed) 
             {
-                rb.AddForce(new Vector2(-rb.mass * AcceletorSpeed,0));
+                Character.Velocity -= AcceletorSpeed;
             }
-            else if(rb.velocity.x < -TopSpeed - SpeedDeadZone) 
+            else if(Character.Velocity < -TopSpeed)
             {
-                
-            }
-            else 
-            {
-               rb.velocity = new Vector2(-TopSpeed, 0);
+                Character.Velocity += DeceletorSpeed;
             }
         }
         if(Character.MyDirection == Character.Direction.Right) 
         {
             if (rb.velocity.x < TopSpeed)
             {
-                rb.AddForce(new Vector2(rb.mass * AcceletorSpeed, rb.mass * AcceletorSpeed));
+                Character.Velocity += AcceletorSpeed;
             }
-            else if (rb.velocity.x >TopSpeed + SpeedDeadZone)
+            else if (Character.Velocity > TopSpeed)
             {
-
-            }
-            else
-            {
-                rb.velocity = new Vector2(TopSpeed, TopSpeed);
+                Character.Velocity -= DeceletorSpeed;
             }
         }
-        CurrentSpeed = rb.velocity.x;
+        rb.velocity = new Vector2(Character.Velocity / rb.mass, rb.velocity.y);
         base.PhysicUpdateState();
     }
     protected override void SetStateLevel()

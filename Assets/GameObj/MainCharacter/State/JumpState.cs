@@ -33,11 +33,19 @@ public class JumpState : State
 
     public override void FrameUpdateState()
     {
-        float Jumpforce = 700;
+        float Jumpforce = 350;
         Aniamtion_frame += 1;
         if(Aniamtion_frame == 5) 
         {
-            rb.AddForce(new Vector2(0, Jumpforce));
+            //rb.velocity = new Vector2(rb.velocity.x,Jumpforce);
+            rb.AddForce(new Vector2(0,Jumpforce));
+        }
+        if(Character.Isground == false) 
+        {
+            Jumpphase = JumpPhase.Jumping;
+        }
+        else if(Aniamtion_frame > 40) 
+        {
             Jumpphase = JumpPhase.Jumping;
         }
         base.FrameUpdateState();

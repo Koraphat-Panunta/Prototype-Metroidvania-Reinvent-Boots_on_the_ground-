@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SprintState : State
 {
-    private float TopSpeed = 25;
-    private float AcceletorSpeed = 10;
-    private float CurrentSpeed;
+    private float TopSpeed = 3;
+    private float AcceletorSpeed = 0.5f;
+    private float DeceletorSpeed = 0.2f;
     private Rigidbody2D rb;
     public enum SprintPhase 
     {
@@ -58,28 +59,28 @@ public class SprintState : State
     {
         if (Character.MyDirection == Character.Direction.Left)
         {
-            if (rb.velocity.x > -TopSpeed)
+            if (Character.Velocity > -TopSpeed)
             {
-                rb.AddForce(new Vector2(-rb.mass * AcceletorSpeed, 0));
+                Character.Velocity -= AcceletorSpeed;
             }
-            else
+            else if (Character.Velocity < -TopSpeed)
             {
-                rb.velocity = new Vector2(-TopSpeed, 0);
+                Character.Velocity += DeceletorSpeed;
             }
         }
         if (Character.MyDirection == Character.Direction.Right)
         {
             if (rb.velocity.x < TopSpeed)
             {
-                rb.AddForce(new Vector2(rb.mass * AcceletorSpeed, 0));
+                Character.Velocity += AcceletorSpeed;
             }
-            else
+            else if (Character.Velocity > TopSpeed)
             {
-                rb.velocity = new Vector2(TopSpeed, 0);
+                Character.Velocity -= DeceletorSpeed;
             }
         }
-        CurrentSpeed = rb.velocity.x;
-        base.PhysicUpdateState();
+        rb.velocity = new Vector2(Character.Velocity / rb.mass, rb.velocity.y);
+        rb.AddForce(new Vector2(0, -20));
         base.PhysicUpdateState();
     }
 

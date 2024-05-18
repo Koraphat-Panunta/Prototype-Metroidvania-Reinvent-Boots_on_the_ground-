@@ -54,19 +54,44 @@ public class Player : Character
                 {
                     Isground = true;
                     FootsAngle = collider.transform.rotation.eulerAngles.z;
+                    if(FootsAngle == 0) 
+                    {
+                        IsOnSlope = false;
+                    }
+                    else 
+                    {
+                        IsOnSlope = true;
+                    }
                     break;
                 }
                 else 
                 {
                     Isground = false;
+                    IsOnSlope=false;
                 }
             }
         }
         else 
         {
+            IsOnSlope = false ;
             Isground = false;
         }
-       
+        if(IsOnSlope == true && CharacterStateMachine.Current_state == Idle) 
+        {
+            MyRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+        }
+        else 
+        {
+            MyRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        }
+        if(Isground == false) 
+        {
+            Airtime += 1;
+        }
+        else 
+        {
+            Airtime = 0;
+        }
         base.FixedUpdate();
     }
     protected override void PerformedState()
@@ -78,7 +103,7 @@ public class Player : Character
     override protected void PerformedIdle()
     {
         if (CharacterStateMachine.Current_state == Idle)
-        {
+        { 
             if (Input.GetKey(KeyCode.S))
             {
                 CharacterStateMachine.ChangeState(Crouch);
@@ -253,21 +278,22 @@ public class Player : Character
         }
         if (CharacterStateMachine.Current_state == Jump)
         {
-            if (AngularVelocity < 0f)
-            {
-                CharacterStateMachine.ChangeState(Fall);
-            }
             if (Input.GetKey(KeyCode.J))
             {
                 Attack = JumpAttack;
                 CharacterStateMachine.ChangeState(Attack);
             }
+            if (CharacterStateMachine.Current_state == Jump && Isground == true && Jump.Jumpphase == JumpState.JumpPhase.Jumping)
+            {
+                AccesstoStateCrossraod();
+            }
         }
 
     }
+    [SerializeField] private double Airtime = 0;
     override protected void PerformedFall()
     {
-        if (AngularVelocity < 0 && CharacterStateMachine.Current_state != Attack&&Isground == false)
+        if (AngularVelocity < 0f && Attack.CurrentAttackPhase == AttackState.AttackPhase.None && Isground == false && IsOnSlope == false && Airtime > 18)
         {
             CharacterStateMachine.ChangeState(Fall);
         }

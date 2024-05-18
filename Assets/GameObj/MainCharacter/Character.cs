@@ -32,7 +32,9 @@ public abstract class Character : MonoBehaviour
     private float PreviosPositionY;
 
     public bool Isground;
+    public bool IsOnSlope;
     [SerializeField] public float FootsAngle;
+    public float Velocity;
     public enum Direction 
     {
         Left,
@@ -56,11 +58,17 @@ public abstract class Character : MonoBehaviour
     virtual protected void Update()
     {
         PerformedState();
-       
     }
     virtual protected void FixedUpdate()
     {
-        
+        if(CharacterStateMachine.Current_state != Walk && CharacterStateMachine.Current_state != Sprint) 
+        {
+            Velocity = 0f;
+        }
+        if(MyRigidbody2D.bodyType == RigidbodyType2D.Kinematic&& MyRigidbody2D.velocity.x != 0) 
+        {
+            MyRigidbody2D.velocity = Vector3.zero;
+        }
         CharacterStateMachine.FixedStateUpdate();
         DirectionManagement();
         CalAngularVelocity(PreviosPositionY);
@@ -105,6 +113,7 @@ public abstract class Character : MonoBehaviour
     }
     virtual protected void PerformedState() 
     {
+        
         PerformedIdle();
         PerformedRun();
         PerformedSprint();
@@ -113,6 +122,7 @@ public abstract class Character : MonoBehaviour
         PerformedJump();
         PerformedFall();
         CharacterStateMachine.UpdateState();
+       
     }
     virtual protected void PerformedIdle() 
     {
@@ -120,7 +130,7 @@ public abstract class Character : MonoBehaviour
     }
     virtual protected void PerformedRun() 
     {
-        
+       
     }
     virtual protected void PerformedSprint() 
     {
@@ -154,4 +164,6 @@ public abstract class Character : MonoBehaviour
     {
         
     }
+    
+   
 }
