@@ -5,7 +5,9 @@ using UnityEngine;
 public class JumpState : State
 {
     private Rigidbody2D rb;
-    private int Aniamtion_frame = 0;
+    public int Aniamtion_frame { get;private set; }
+    public const float JUMPFORCE = 230;
+    private bool IsDoubleJump;
     public enum JumpPhase 
     {
         None,
@@ -19,9 +21,27 @@ public class JumpState : State
     }
     public override void EnterState()
     {
-        Animation.Play("Jump");
-        Jumpphase = JumpPhase.PreJump;
-        Aniamtion_frame = 0;
+        Character.jumpCount -= 1;
+        if (Character.Isground == true)
+        {
+            Animation.Play("Jump");
+            Jumpphase = JumpPhase.PreJump;
+            Aniamtion_frame = 0;
+            IsDoubleJump = false;
+        }
+        else if(Character.Isground == false) 
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(0, JUMPFORCE));
+            Animation.Play("Jump");
+            Jumpphase = JumpPhase.PreJump;
+            IsDoubleJump = true;
+            Aniamtion_frame = 0;
+        }
+        if (Character.TryGetComponent<Player>(out Player player))
+        {
+            player.Airtime = 0;
+        }
         base.EnterState();
     }
 
@@ -33,12 +53,11 @@ public class JumpState : State
 
     public override void FrameUpdateState()
     {
-        float Jumpforce = 350;
         Aniamtion_frame += 1;
-        if(Aniamtion_frame == 5) 
+        if(Aniamtion_frame == 5&&IsDoubleJump == false) 
         {
             //rb.velocity = new Vector2(rb.velocity.x,Jumpforce);
-            rb.AddForce(new Vector2(0,Jumpforce));
+            rb.AddForce(new Vector2(0,JUMPFORCE));
         }
         if(Character.Isground == false) 
         {
@@ -48,9 +67,13 @@ public class JumpState : State
         {
             Jumpphase = JumpPhase.Jumping;
         }
+        if (Input.GetKeyDown(KeyCode.Space)&&Character.jumpCount>0) 
+        {
+            Character.CharacterStateMachine.ChangeState(this);
+        }
         base.FrameUpdateState();
     }
-
+   
     public override void PhysicUpdateState()
     {
         base.PhysicUpdateState();

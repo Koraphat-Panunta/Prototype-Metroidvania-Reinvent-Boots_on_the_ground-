@@ -20,6 +20,14 @@ public class FallState :State
     }
     public override void FrameUpdateState()
     {
+        if (Input.GetKeyDown(KeyCode.Space)&&Character.jumpCount > 0) 
+        {
+            Character.CharacterStateMachine.ChangeState(Character.Jump);
+            if( Character.TryGetComponent<Player>(out Player player)) 
+            {
+                player.Airtime = 0;
+            }
+        }
         base.FrameUpdateState();
     }
     public override void PhysicUpdateState()

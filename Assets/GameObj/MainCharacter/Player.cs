@@ -12,6 +12,7 @@ public class Player : Character
     private CrouchAttackState CrouchAttack;
     private JumpAttack JumpAttack;
     private Attack_Run attack_run;
+
     protected override void SetupState()
     {
         Idle = new IdleState(MyAnimator, MyCharacter);
@@ -32,6 +33,8 @@ public class Player : Character
     }
     protected override void Start()
     {
+        IsControlbyPlayer = true;
+        HeathPoint = 2;
         base.Start();       
     }
 
@@ -87,10 +90,16 @@ public class Player : Character
         if(Isground == false) 
         {
             Airtime += 1;
+            MyRigidbody2D.drag = 0;
         }
         else 
         {
             Airtime = 0;
+            MyRigidbody2D.drag = 1;
+            if (CharacterStateMachine.Current_state != Jump) 
+            {
+                jumpCount = 2;
+            }
         }
         base.FixedUpdate();
     }
@@ -271,7 +280,7 @@ public class Player : Character
         if (CharacterStateMachine.Current_state == Idle || CharacterStateMachine.Current_state == Walk
             || CharacterStateMachine.Current_state == Sprint && (CharacterStateMachine.Current_state != Jump))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space)&&jumpCount>0)
             {
                 CharacterStateMachine.ChangeState(Jump);
             }
@@ -289,11 +298,13 @@ public class Player : Character
             }
         }
 
+
     }
-    [SerializeField] private double Airtime = 0;
+    public double Airtime = 0;
     override protected void PerformedFall()
     {
-        if (AngularVelocity < 0f && Attack.CurrentAttackPhase == AttackState.AttackPhase.None && Isground == false && IsOnSlope == false && Airtime > 18)
+        if (AngularVelocity < 0f && Attack.CurrentAttackPhase == AttackState.AttackPhase.None && Isground == false && IsOnSlope == false && Airtime > 18
+            && Jump.IsEnter == false)
         {
             CharacterStateMachine.ChangeState(Fall);
         }
@@ -304,6 +315,7 @@ public class Player : Character
                 Attack = JumpAttack;
                 CharacterStateMachine.ChangeState(Attack);
             }
+
             if (CharacterStateMachine.Current_state == Fall&& Isground == true)
             {
                 AccesstoStateCrossraod();

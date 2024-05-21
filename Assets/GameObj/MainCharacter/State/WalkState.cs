@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class WalkState : State
 {
+    //Default Value
     private float TopSpeed = 2;
     private float AcceletorSpeed = 0.2f;
     private float DeceletorSpeed = 0.2f;
     private Rigidbody2D rb;
 
     
+    public WalkState(Animator animator, GameObject Char,float Speed,float Acceletor) : base(animator, Char)
+    {
+        rb = Char.GetComponent<Rigidbody2D>();
+        TopSpeed = Speed;
+        AcceletorSpeed = Acceletor;
+        
+    }
     public WalkState(Animator animator, GameObject Char) : base(animator, Char)
     {
         rb = Char.GetComponent<Rigidbody2D>();
-        
+
     }
 
     public override void EnterState()

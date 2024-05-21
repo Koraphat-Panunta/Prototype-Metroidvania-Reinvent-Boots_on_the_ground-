@@ -20,7 +20,7 @@ public class Enemy : Character
     protected override void SetupState()
     {
         Idle = new IdleState(MyAnimator,MyCharacter);
-        Walk = new WalkState(MyAnimator,MyCharacter);
+        Walk = new WalkState(MyAnimator,MyCharacter,3,0.5f);
         WalkBack = new WalkBack(MyAnimator,MyCharacter);
         Attack = new AttackState(MyAnimator,MyCharacter,Attack_box);   
 
@@ -29,10 +29,10 @@ public class Enemy : Character
     }
     protected override void Start()
     {
-        CurrentEnemyRole = Enemy_Role.Stand;
+        base.IsControlbyPlayer = false;
+        base.HeathPoint = 1;
         base.Start();
     }
-
     protected override void Update()
     {       
         base.Update();        
@@ -207,6 +207,15 @@ public class Enemy : Character
  
         base.AccesstoStateCrossraod();
     }
-    
+    public override void GotAttack()
+    {
+        HeathPoint -= 1;
+        if (HeathPoint <= 0) 
+        {
+            GameObject.Destroy(gameObject);   
+        }
+        base.GotAttack();
+    }
+
 
 }

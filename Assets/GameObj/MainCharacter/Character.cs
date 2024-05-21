@@ -35,12 +35,16 @@ public abstract class Character : MonoBehaviour
     public bool IsOnSlope;
     [SerializeField] public float FootsAngle;
     public float Velocity;
+    public int jumpCount = 2;
+    
+    public int HeathPoint { get;protected set; }
     public enum Direction 
     {
         Left,
         Right
     }
     public Direction MyDirection;
+    public bool IsControlbyPlayer { get;protected set; }
     protected virtual void SetupState() 
     {
         CharacterStateMachine = new CharacterStateMachine(Idle);
@@ -57,6 +61,7 @@ public abstract class Character : MonoBehaviour
     // Update is called once per frame
     virtual protected void Update()
     {
+        CharacterStateMachine.UpdateState();
         PerformedState();
     }
     virtual protected void FixedUpdate()
@@ -113,7 +118,6 @@ public abstract class Character : MonoBehaviour
     }
     virtual protected void PerformedState() 
     {
-        
         PerformedIdle();
         PerformedRun();
         PerformedSprint();
@@ -121,8 +125,6 @@ public abstract class Character : MonoBehaviour
         PerformedCrouch();
         PerformedJump();
         PerformedFall();
-        CharacterStateMachine.UpdateState();
-       
     }
     virtual protected void PerformedIdle() 
     {
@@ -163,6 +165,10 @@ public abstract class Character : MonoBehaviour
     virtual public void AccesstoStateCrossraod() 
     {
         
+    }
+    virtual public void GotAttack() 
+    {
+        Debug.Log("GotAttack");
     }
     
    
