@@ -6,9 +6,12 @@ public class DamageZone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponentInParent<Character>().TryGetComponent<Enemy>(out Enemy enemy)) 
+        if (collision.tag == "Enemy")
         {
-            enemy.GotAttack();
+            if (collision.GetComponentInParent<Character>().TryGetComponent<Enemy>(out Enemy enemy))
+            {
+                enemy.GotAttack();
+            }
         }
     }
 }

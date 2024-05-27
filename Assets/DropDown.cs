@@ -2,33 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallState :State
+public class DropDown : State
 {
-    
-    public FallState(Animator animator, GameObject Char) : base(animator, Char)
+    int AnimateFrame;
+    public DropDown(Animator animator, GameObject Char) : base(animator, Char)
     {
-       
     }
     public override void EnterState()
     {
-        Animation.Play("Fall");
+        base.Animation.Play("Fall");
+        AnimateFrame = 0;
+        Character.Hitted_box.isTrigger = true;
         base.EnterState();
     }
+
     public override void ExitState()
     {
+        
         base.ExitState();
     }
+
     public override void FrameUpdateState()
     {
-        
+        AnimateFrame++;
+        if(AnimateFrame >= 90) 
+        {
+            ExitState();
+        }
         base.FrameUpdateState();
     }
+
     public override void PhysicUpdateState()
     {
         base.PhysicUpdateState();
     }
+
     protected override void SetStateLevel()
     {
-        base.StateLevle = stateAbleToBypass.Semi;
+        throw new System.NotImplementedException();
     }
 }

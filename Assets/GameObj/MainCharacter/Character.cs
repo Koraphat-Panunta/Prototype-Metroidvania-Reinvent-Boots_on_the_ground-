@@ -31,8 +31,17 @@ public abstract class Character : MonoBehaviour
     [SerializeField] public float AngularVelocity;
     private float PreviosPositionY;
 
-    public bool Isground;
-    public bool IsOnSlope;
+    //public bool Isground;
+    //public bool IsOnSlope;
+    public enum CharacterGround 
+    {
+        Ground,
+        Platform,
+        SlopePlatform,
+        Air
+    }
+    public CharacterGround Characterground;
+    public bool IsOnWallBack;
     [SerializeField] public float FootsAngle;
     public float Velocity;
     public int jumpCount = 2;
@@ -169,6 +178,17 @@ public abstract class Character : MonoBehaviour
     virtual public void GotAttack() 
     {
         Debug.Log("GotAttack");
+    }
+    public bool IsGround() 
+    {
+        if(Characterground == CharacterGround.Ground || Characterground == CharacterGround.SlopePlatform || Characterground == CharacterGround.Platform) 
+        {
+            return true;
+        }
+        else 
+        { 
+            return false; 
+        }
     }
     
    

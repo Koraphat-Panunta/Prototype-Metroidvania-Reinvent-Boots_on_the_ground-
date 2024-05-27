@@ -13,6 +13,13 @@ public class Player : Character
     private JumpAttack JumpAttack;
     private Attack_Run attack_run;
 
+    public JumpGroundUp JumpGroundUp { get;private set; }
+    public JumpWallBack JumpWallBack { get;private set; }
+    public JumpWallSide JumpWallSide { get; private set; }
+    public EjectWallSide EjectWallSide { get; private set; }
+
+    public DropDown dropDown { get;private set; }
+
     protected override void SetupState()
     {
         Idle = new IdleState(MyAnimator, MyCharacter);
@@ -20,7 +27,7 @@ public class Player : Character
         Sprint = new SprintState(MyAnimator, MyCharacter);
         Attack = new AttackState(MyAnimator, MyCharacter, Attack_box);
         Crouch = new CrouchState(MyAnimator, MyCharacter);
-        Jump = new JumpState(MyAnimator, MyCharacter);
+        dropDown = new DropDown(MyAnimator, MyCharacter);
         Fall = new FallState(MyAnimator, MyCharacter);
 
         attack_1 = new Attack_1(MyAnimator, MyCharacter, Attack_box);
@@ -29,6 +36,11 @@ public class Player : Character
         CrouchAttack = new CrouchAttackState(MyAnimator, MyCharacter, Attack_box);
         JumpAttack = new JumpAttack(MyAnimator, MyCharacter, Attack_box);
         attack_run = new Attack_Run(MyAnimator, MyCharacter, Attack_box);
+
+        JumpGroundUp = new JumpGroundUp(MyAnimator, MyCharacter);
+        JumpWallBack = new JumpWallBack(MyAnimator, MyCharacter);
+        JumpWallSide = new JumpWallSide(MyAnimator, MyCharacter);
+        EjectWallSide = new EjectWallSide(MyAnimator, MyCharacter);
         base.SetupState();
     }
     protected override void Start()
@@ -55,31 +67,59 @@ public class Player : Character
             {
                 if (collider.CompareTag("Ground")) 
                 {
-                    Isground = true;
+                   
+                    Characterground = CharacterGround.Ground;
+                    JumpWallBack.SetJumpAble(true);
                     FootsAngle = collider.transform.rotation.eulerAngles.z;
                     if(FootsAngle == 0) 
                     {
-                        IsOnSlope = false;
+                       
+                        Characterground = CharacterGround.Ground;
                     }
                     else 
                     {
-                        IsOnSlope = true;
+                      
+                        Characterground = CharacterGround.SlopePlatform;
                     }
                     break;
                 }
+                else if (collider.CompareTag("Platform")) 
+                {
+                    if(MyRigidbody2D.angularVelocity <= 0&&gameObject.transform.position.y>collider.transform.position.y) 
+                    {
+                       
+                        Characterground = CharacterGround.Platform;
+                        JumpWallBack.SetJumpAble(true);
+                        FootsAngle = collider.transform.rotation.eulerAngles.z;
+                        if (FootsAngle == 0)
+                        {
+                          
+                        }
+                        else
+                        {
+                          
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Characterground = CharacterGround.Air;
+                        
+                    }
+                }
                 else 
                 {
-                    Isground = false;
-                    IsOnSlope=false;
+                    
+                    Characterground = CharacterGround.Air;
                 }
             }
         }
         else 
         {
-            IsOnSlope = false ;
-            Isground = false;
+           
+            Characterground = CharacterGround.Air;
         }
-        if(IsOnSlope == true && CharacterStateMachine.Current_state == Idle) 
+        if(Characterground == CharacterGround.SlopePlatform && CharacterStateMachine.Current_state == Idle) 
         {
             MyRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         }
@@ -87,15 +127,24 @@ public class Player : Character
         {
             MyRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         }
-        if(Isground == false) 
+        if(Characterground == CharacterGround.Air) 
         {
             Airtime += 1;
             MyRigidbody2D.drag = 0;
+            Hitted_box.isTrigger = true;
         }
         else 
         {
             Airtime = 0;
             MyRigidbody2D.drag = 1;
+            if(CharacterStateMachine.Current_state == dropDown) 
+            {
+                Hitted_box.isTrigger = true ;
+            }
+            else 
+            {
+                Hitted_box.isTrigger = false;
+            }
             if (CharacterStateMachine.Current_state != Jump) 
             {
                 jumpCount = 2;
@@ -105,6 +154,7 @@ public class Player : Character
     }
     protected override void PerformedState()
     {
+        PerformedDropDown();
         base.PerformedState();
     }
 
@@ -112,25 +162,37 @@ public class Player : Character
     override protected void PerformedIdle()
     {
         if (CharacterStateMachine.Current_state == Idle)
-        { 
-            if (Input.GetKey(KeyCode.S))
+        {
+            if (IsGround())
             {
-                CharacterStateMachine.ChangeState(Crouch);
+                if (Input.GetKeyDown(KeyCode.Space)) 
+                {
+                    Jump = JumpGroundUp;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+                else if (Input.GetKey(KeyCode.J))
+                {
+                    Attack = attack_1;
+                    CharacterStateMachine.ChangeState(Attack);
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    CharacterStateMachine.ChangeState(Crouch);
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    MyDirection = Direction.Left;
+                    CharacterStateMachine.ChangeState(Walk);
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    MyDirection = Direction.Right;
+                    CharacterStateMachine.ChangeState(Walk);
+                }     
             }
-            if (Input.GetKey(KeyCode.A))
+            else if (Characterground == CharacterGround.Air) 
             {
-                MyDirection = Direction.Left;
-                CharacterStateMachine.ChangeState(Walk);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                MyDirection = Direction.Right;
-                CharacterStateMachine.ChangeState(Walk);
-            }
-            if (Input.GetKey(KeyCode.J))
-            {
-                Attack = attack_1;
-                CharacterStateMachine.ChangeState(Attack);
+                AccesstoStateCrossraod();
             }
         }
     }
@@ -138,29 +200,38 @@ public class Player : Character
     {
         if (CharacterStateMachine.Current_state == Walk)
         {
-            if (Input.anyKey == false)
+            if (IsGround())
             {
-                CharacterStateMachine.ChangeState(Idle);
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    CharacterStateMachine.ChangeState(Sprint);
-                }
-                if (Input.GetKey(KeyCode.A))
-                {
-                    MyDirection = Direction.Left;
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    MyDirection = Direction.Right;
-                }
                 if (Input.GetKey(KeyCode.J))
                 {
                     Attack = attack_1;
                     CharacterStateMachine.ChangeState(Attack);
                 }
+                else if (Input.GetKeyDown(KeyCode.Space)) 
+                {
+                    Jump = JumpGroundUp;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    CharacterStateMachine.ChangeState(Sprint);
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    MyDirection = Direction.Left;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    MyDirection = Direction.Right;
+                }
+                else 
+                {
+                    CharacterStateMachine.ChangeState(Idle);
+                }
+            }
+            else if(Characterground == CharacterGround.Air) 
+            {
+                AccesstoStateCrossraod();
             }
         }
     }
@@ -168,41 +239,39 @@ public class Player : Character
     {
         if (CharacterStateMachine.Current_state == Sprint)
         {
-            if (Input.anyKey == false)
+            if (IsGround()) 
             {
-                CharacterStateMachine.ChangeState(Idle);
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.J))
+                if (Input.GetKey(KeyCode.LeftShift) == false)
+                {
+                    AccesstoStateCrossraod();
+                }
+                else if (Input.GetKey(KeyCode.J))
                 {
                     Attack = attack_run;
                     CharacterStateMachine.ChangeState(Attack);
                 }
-                if (Input.GetKey(KeyCode.LeftShift) == false)
+                else if (Input.GetKeyDown(KeyCode.Space)) 
                 {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        CharacterStateMachine.ChangeState(Walk);
-                        MyDirection = Direction.Left;
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        CharacterStateMachine.ChangeState(Walk);
-                        MyDirection = Direction.Right;
-                    }
+                    Jump = JumpGroundUp;
+                    CharacterStateMachine.ChangeState(Jump);
                 }
-                else
+                else if (Input.GetKey(KeyCode.A))
                 {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        MyDirection = Direction.Left;
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        MyDirection = Direction.Right;
-                    }
+                    MyDirection = Direction.Left;
                 }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    MyDirection = Direction.Right;
+                }
+                else 
+                {
+                    AccesstoStateCrossraod();
+                }
+               
+            }
+            else if(IsGround() == false) 
+            {
+                AccesstoStateCrossraod();
             }
 
         }
@@ -224,7 +293,7 @@ public class Player : Character
             }
             else if (Attack.CurrentAttackPhase == AttackState.AttackPhase.PostAttack)
             {
-                if (Input.GetKey(KeyCode.J))
+                if (Input.GetKeyDown(KeyCode.J))
                 {
                     if (Attack == attack_1)
                     {
@@ -249,50 +318,52 @@ public class Player : Character
     {
         if (CharacterStateMachine.Current_state == Crouch)
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (IsGround() == true)
             {
+                if (Input.GetKeyDown(KeyCode.J))
+                {
 
-                Attack = CrouchAttack;
-                CharacterStateMachine.ChangeState(Attack);
+                    Attack = CrouchAttack;
+                    CharacterStateMachine.ChangeState(Attack);
+                }
+                else if (Input.GetKeyDown(KeyCode.Space)&&Characterground == CharacterGround.Platform) 
+                {
+                    CharacterStateMachine.ChangeState(dropDown);
+                }
+                else if (Input.GetKey(KeyCode.S) == false)
+                {
+                    AccesstoStateCrossraod();
+                }
             }
-            else if (Input.GetKey(KeyCode.S) == false)
+            else if(IsGround() == false) 
             {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    MyDirection = Direction.Left;
-                    CharacterStateMachine.ChangeState(Walk);
-                }
-                else if (Input.GetKey(KeyCode.D))
-                {
-                    MyDirection = Direction.Right;
-                    CharacterStateMachine.ChangeState(Walk);
-                }
-                else
-                {
-                    CharacterStateMachine.ChangeState(Idle);
-                }
+                AccesstoStateCrossraod();
             }
 
         }
     }
     override protected void PerformedJump()
     {
-        if (CharacterStateMachine.Current_state == Idle || CharacterStateMachine.Current_state == Walk
-            || CharacterStateMachine.Current_state == Sprint && (CharacterStateMachine.Current_state != Jump))
-        {
-            if (Input.GetKeyDown(KeyCode.Space)&&jumpCount>0)
-            {
-                CharacterStateMachine.ChangeState(Jump);
-            }
-        }
         if (CharacterStateMachine.Current_state == Jump)
         {
-            if (Input.GetKey(KeyCode.J))
+            if (IsGround() == false)
             {
-                Attack = JumpAttack;
-                CharacterStateMachine.ChangeState(Attack);
+                if (Input.GetKey(KeyCode.J))
+                {
+                    Attack = JumpAttack;
+                    CharacterStateMachine.ChangeState(Attack);
+                }
+                if(Input.GetKeyDown(KeyCode.Space)&&JumpWallBack.JumpAble == true&&IsOnWallBack == true) 
+                {
+                    Jump = JumpWallBack;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+                if (CharacterStateMachine.Current_state == Jump && CharacterStateMachine.Current_state.IsExit)
+                {
+                    AccesstoStateCrossraod();
+                }
             }
-            if (CharacterStateMachine.Current_state == Jump && Isground == true && Jump.Jumpphase == JumpState.JumpPhase.Jumping)
+            else if (CharacterStateMachine.Current_state == Jump && IsGround() && Jump.Jumpphase == JumpState.JumpPhase.Jumping)
             {
                 AccesstoStateCrossraod();
             }
@@ -303,11 +374,6 @@ public class Player : Character
     public double Airtime = 0;
     override protected void PerformedFall()
     {
-        if (AngularVelocity < 0f && Attack.CurrentAttackPhase == AttackState.AttackPhase.None && Isground == false && IsOnSlope == false && Airtime > 18
-            && Jump.IsEnter == false)
-        {
-            CharacterStateMachine.ChangeState(Fall);
-        }
         if (CharacterStateMachine.Current_state == Fall)
         {
             if (Input.GetKeyDown(KeyCode.J))
@@ -315,33 +381,73 @@ public class Player : Character
                 Attack = JumpAttack;
                 CharacterStateMachine.ChangeState(Attack);
             }
-
-            if (CharacterStateMachine.Current_state == Fall&& Isground == true)
+            if (Input.GetKeyDown(KeyCode.Space) && JumpWallBack.JumpAble == true && IsOnWallBack == true)
+            {
+                Jump = JumpWallBack;
+                CharacterStateMachine.ChangeState(Jump);
+            }
+            if (CharacterStateMachine.Current_state == Fall&& IsGround())
             {
                 AccesstoStateCrossraod();
             }
         }
 
     }
+    protected void PerformedDropDown() 
+    {
+        if(CharacterStateMachine.Current_state == dropDown) 
+        {
+            Hitted_box.isTrigger = true;
+            if(dropDown.IsExit == true) 
+            {
+                AccesstoStateCrossraod();
+            }
+        }
+    }
     override public void AccesstoStateCrossraod()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (IsGround())
         {
-            CharacterStateMachine.ChangeState(Crouch);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            CharacterStateMachine.ChangeState(Walk);
-            MyDirection = Direction.Left;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            CharacterStateMachine.ChangeState(Walk);
-            MyDirection = Direction.Right;
-        }
-        else if(Isground == true)
+            if (Input.GetKey(KeyCode.S))
+            {
+                CharacterStateMachine.ChangeState(Crouch);
+            }
+            else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
+            {
+                CharacterStateMachine.ChangeState(Sprint);
+                MyDirection = Direction.Left;
+            }
+            else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
+            {
+                CharacterStateMachine.ChangeState(Sprint);
+                MyDirection = Direction.Right;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                CharacterStateMachine.ChangeState(Walk);
+                MyDirection = Direction.Left;
+            }
+            else if (Input.GetKey(KeyCode.D)) 
+            {
+                CharacterStateMachine.ChangeState(Walk);
+                MyDirection = Direction.Right;
+            }
+        else
         {
             CharacterStateMachine.ChangeState(Idle);
+        }
+        }
+        else 
+        {
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                Attack = JumpAttack;
+                CharacterStateMachine.ChangeState(Attack);
+            }
+            else 
+            {
+                CharacterStateMachine.ChangeState(Fall);
+            }
         }
     }
 }

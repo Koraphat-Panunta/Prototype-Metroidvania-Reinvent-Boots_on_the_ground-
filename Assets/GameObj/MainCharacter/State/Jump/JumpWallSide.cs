@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallState :State
+public class JumpWallSide : JumpState
 {
-    
-    public FallState(Animator animator, GameObject Char) : base(animator, Char)
+    public JumpWallSide(Animator animator, GameObject Char) : base(animator, Char)
     {
-       
+
     }
     public override void EnterState()
     {
-        Animation.Play("Fall");
         base.EnterState();
     }
     public override void ExitState()
@@ -20,15 +18,15 @@ public class FallState :State
     }
     public override void FrameUpdateState()
     {
-        
         base.FrameUpdateState();
     }
+
     public override void PhysicUpdateState()
     {
         base.PhysicUpdateState();
     }
     protected override void SetStateLevel()
     {
-        base.StateLevle = stateAbleToBypass.Semi;
+        base.SetStateLevel();
     }
 }
