@@ -10,6 +10,17 @@ public class EjectWallSide : JumpState
 
     public override void EnterState()
     {
+        if (Character.MyDirection == Character.Direction.Left)
+        {
+            Character.MyDirection = Character.Direction.Right;  
+        }
+        else if (Character.MyDirection == Character.Direction.Right) 
+        {
+            Character.MyDirection = Character.Direction.Left;
+        }
+        base.Animation.Play("Jump");
+        base.Aniamtion_frame = 0;
+        base.Jumpphase = JumpPhase.Jumping;
         base.EnterState();
     }
 
@@ -20,6 +31,23 @@ public class EjectWallSide : JumpState
 
     public override void FrameUpdateState()
     {
+        if (Aniamtion_frame == 5)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            if (Character.MyDirection == Character.Direction.Left)
+            {
+                rb.AddForce(new Vector2(-JUMPFORCE, JUMPFORCE));
+            }
+            else if (Character.MyDirection == Character.Direction.Right)
+            {
+                rb.AddForce(new Vector2(JUMPFORCE, JUMPFORCE));
+            }
+            
+        }
+        else if (Aniamtion_frame >= 40)
+        {
+            ExitState();
+        }
         base.FrameUpdateState();
     }
 

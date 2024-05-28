@@ -13,11 +13,25 @@ public class Player : Character
     private JumpAttack JumpAttack;
     private Attack_Run attack_run;
 
+    public enum IsHitWall 
+    {
+        None,
+        Left,
+        Right,
+    }
+    public enum IsHitObjectClimbAble 
+    {
+        None,
+        Left,
+        Right,
+    }
+    public IsHitWall HitWall = IsHitWall.None;
+    public IsHitObjectClimbAble HitObjectClimbAble = IsHitObjectClimbAble.None;
     public JumpGroundUp JumpGroundUp { get;private set; }
     public JumpWallBack JumpWallBack { get;private set; }
     public JumpWallSide JumpWallSide { get; private set; }
     public EjectWallSide EjectWallSide { get; private set; }
-
+    public Climb Climb { get; private set; }
     public DropDown dropDown { get;private set; }
 
     protected override void SetupState()
@@ -41,6 +55,7 @@ public class Player : Character
         JumpWallBack = new JumpWallBack(MyAnimator, MyCharacter);
         JumpWallSide = new JumpWallSide(MyAnimator, MyCharacter);
         EjectWallSide = new EjectWallSide(MyAnimator, MyCharacter);
+        Climb = new Climb(MyAnimator, MyCharacter);
         base.SetupState();
     }
     protected override void Start()
@@ -59,102 +74,13 @@ public class Player : Character
     override protected void FixedUpdate()
     {
         DectionalTarget("Enemy");
-        List<Collider2D> colliders = new List<Collider2D>();
-        MyRigidbody2D.GetContacts(colliders);
-        if (colliders.Count > 0)
-        {
-            foreach (Collider2D collider in colliders)
-            {
-                if (collider.CompareTag("Ground")) 
-                {
-                   
-                    Characterground = CharacterGround.Ground;
-                    JumpWallBack.SetJumpAble(true);
-                    FootsAngle = collider.transform.rotation.eulerAngles.z;
-                    if(FootsAngle == 0) 
-                    {
-                       
-                        Characterground = CharacterGround.Ground;
-                    }
-                    else 
-                    {
-                      
-                        Characterground = CharacterGround.SlopePlatform;
-                    }
-                    break;
-                }
-                else if (collider.CompareTag("Platform")) 
-                {
-                    if(MyRigidbody2D.angularVelocity <= 0&&gameObject.transform.position.y>collider.transform.position.y) 
-                    {
-                       
-                        Characterground = CharacterGround.Platform;
-                        JumpWallBack.SetJumpAble(true);
-                        FootsAngle = collider.transform.rotation.eulerAngles.z;
-                        if (FootsAngle == 0)
-                        {
-                          
-                        }
-                        else
-                        {
-                          
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        Characterground = CharacterGround.Air;
-                        
-                    }
-                }
-                else 
-                {
-                    
-                    Characterground = CharacterGround.Air;
-                }
-            }
-        }
-        else 
-        {
-           
-            Characterground = CharacterGround.Air;
-        }
-        if(Characterground == CharacterGround.SlopePlatform && CharacterStateMachine.Current_state == Idle) 
-        {
-            MyRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-        }
-        else 
-        {
-            MyRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        }
-        if(Characterground == CharacterGround.Air) 
-        {
-            Airtime += 1;
-            MyRigidbody2D.drag = 0;
-            Hitted_box.isTrigger = true;
-        }
-        else 
-        {
-            Airtime = 0;
-            MyRigidbody2D.drag = 1;
-            if(CharacterStateMachine.Current_state == dropDown) 
-            {
-                Hitted_box.isTrigger = true ;
-            }
-            else 
-            {
-                Hitted_box.isTrigger = false;
-            }
-            if (CharacterStateMachine.Current_state != Jump) 
-            {
-                jumpCount = 2;
-            }
-        }
+        CheckCharacterCollider();
         base.FixedUpdate();
     }
     protected override void PerformedState()
     {
         PerformedDropDown();
+        PerformedClimb(ClimbObject);
         base.PerformedState();
     }
 
@@ -353,12 +279,48 @@ public class Player : Character
                     Attack = JumpAttack;
                     CharacterStateMachine.ChangeState(Attack);
                 }
-                if(Input.GetKeyDown(KeyCode.Space)&&JumpWallBack.JumpAble == true&&IsOnWallBack == true) 
+                else if(Input.GetKeyDown(KeyCode.Space)) 
                 {
-                    Jump = JumpWallBack;
-                    CharacterStateMachine.ChangeState(Jump);
+                    if (JumpWallBack.JumpAble == true && IsOnWallBack == true)
+                    {
+                        Jump = JumpWallBack;
+                        CharacterStateMachine.ChangeState(Jump);
+                    }
+                    else if(JumpWallSide.JumpAble == true&&HitWall!= IsHitWall.None) 
+                    {
+                       if(HitWall == IsHitWall.Left&&MyDirection == Direction.Left) 
+                       {
+                            if(Input.GetKey(KeyCode.A)&&Input.GetKey(KeyCode.W)) 
+                            {
+                                Jump = JumpWallSide;
+                                CharacterStateMachine.ChangeState(Jump);    
+                            }
+                            else if (Input.GetKey(KeyCode.A)) 
+                            {
+                                Jump = EjectWallSide;
+                                CharacterStateMachine.ChangeState(Jump);
+                            }
+                       }
+                       else if(HitWall == IsHitWall.Right&& MyDirection == Direction.Right) 
+                       {
+                            if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+                            {
+                                Jump = JumpWallSide;
+                                CharacterStateMachine.ChangeState(Jump);
+                            }
+                            else if (Input.GetKey(KeyCode.D))
+                            {
+                                Jump = EjectWallSide;
+                                CharacterStateMachine.ChangeState(Jump);
+                            }
+                        }
+                    }
                 }
-                if (CharacterStateMachine.Current_state == Jump && CharacterStateMachine.Current_state.IsExit)
+                else if(HitObjectClimbAble != IsHitObjectClimbAble.None&&Input.GetKey(KeyCode.E)) 
+                {
+                    CharacterStateMachine.ChangeState(Climb);
+                }
+                if (CharacterStateMachine.Current_state == Jump && Jump.IsExit == true)
                 {
                     AccesstoStateCrossraod();
                 }
@@ -381,10 +343,46 @@ public class Player : Character
                 Attack = JumpAttack;
                 CharacterStateMachine.ChangeState(Attack);
             }
-            if (Input.GetKeyDown(KeyCode.Space) && JumpWallBack.JumpAble == true && IsOnWallBack == true)
+            else if (Input.GetKeyDown(KeyCode.Space))
             {
-                Jump = JumpWallBack;
-                CharacterStateMachine.ChangeState(Jump);
+                if (JumpWallBack.JumpAble == true && IsOnWallBack == true)
+                {
+                    Jump = JumpWallBack;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+                else if (JumpWallSide.JumpAble == true && HitWall != IsHitWall.None)
+                {
+                    if (HitWall == IsHitWall.Left && MyDirection == Direction.Left)
+                    {
+                        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+                        {
+                            Jump = JumpWallSide;
+                            CharacterStateMachine.ChangeState(Jump);
+                        }
+                        else if (Input.GetKey(KeyCode.A))
+                        {
+                            Jump = EjectWallSide;
+                            CharacterStateMachine.ChangeState(Jump);
+                        }
+                    }
+                    else if (HitWall == IsHitWall.Right && MyDirection == Direction.Right)
+                    {
+                        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+                        {
+                            Jump = JumpWallSide;
+                            CharacterStateMachine.ChangeState(Jump);
+                        }
+                        else if (Input.GetKey(KeyCode.D))
+                        {
+                            Jump = EjectWallSide;
+                            CharacterStateMachine.ChangeState(Jump);
+                        }
+                    }
+                }
+            }
+            else if (HitObjectClimbAble != IsHitObjectClimbAble.None && Input.GetKey(KeyCode.E))
+            {
+                CharacterStateMachine.ChangeState(Climb);
             }
             if (CharacterStateMachine.Current_state == Fall&& IsGround())
             {
@@ -402,6 +400,53 @@ public class Player : Character
             {
                 AccesstoStateCrossraod();
             }
+        }
+    }
+    protected void PerformedClimb(Collider2D collider) 
+    {
+        if(CharacterStateMachine.Current_state == Climb) 
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                Climb.ClimbUp();
+            }
+            else if (Input.GetKey(KeyCode.S)) 
+            {
+                Climb.ClimbDown();
+            }
+            else if (Input.GetKeyDown(KeyCode.Space)) 
+            {
+                if(MyDirection == Direction.Left&&Input.GetKey(KeyCode.A)) 
+                {
+                    Jump = EjectWallSide;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+                else if(MyDirection == Direction.Right && Input.GetKey(KeyCode.D)) 
+                {
+                    Jump = EjectWallSide;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+                else 
+                {
+                    Jump = JumpWallSide;
+                    CharacterStateMachine.ChangeState(Jump);
+                }
+            }
+            else 
+            {
+                Climb.ClimbHang();
+            }
+            if(HitObjectClimbAble == IsHitObjectClimbAble.Left) 
+            {
+                MyDirection = Direction.Left;
+                gameObject.transform.position = new Vector2(collider.transform.position.x+0.45F,gameObject.transform.position.y);
+            }
+            if(HitObjectClimbAble == IsHitObjectClimbAble.Right) 
+            {
+                MyDirection = Direction.Right;
+                gameObject.transform.position = new Vector2(collider.transform.position.x-0.45F, gameObject.transform.position.y);
+            }
+            
         }
     }
     override public void AccesstoStateCrossraod()
@@ -450,5 +495,139 @@ public class Player : Character
             }
         }
     }
+    private void CheckCharacterCollider() 
+    {
+        List<Collider2D> colliders = new List<Collider2D>();
+        MyRigidbody2D.GetContacts(colliders);
+        if (colliders.Count > 0)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.CompareTag("Wall"))
+                {
+                    if (collider.transform.position.x < gameObject.transform.position.x)
+                    {
+                        HitWall = IsHitWall.Left;
+                    }
+                    else if (collider.transform.position.x > gameObject.transform.position.x)
+                    {
+                        HitWall = IsHitWall.Right;
+                    }
+                }
+                else
+                {
+                    HitWall = IsHitWall.None;
+                }
+                if (collider.CompareTag("ClimbObject"))
+                {
+                    if (collider.transform.position.x < gameObject.transform.position.x)
+                    {
+                        HitObjectClimbAble = IsHitObjectClimbAble.Left;
+                        ClimbObject = collider;
+                    }
+                    else if (collider.transform.position.x > gameObject.transform.position.x)
+                    {
+                        HitObjectClimbAble = IsHitObjectClimbAble.Right;
+                        ClimbObject = collider;
+                    }
+                }
+                else
+                {
+                    HitObjectClimbAble = IsHitObjectClimbAble.None;
+                    ClimbObject = null;
+                }
+                if (collider.CompareTag("Ground"))
+                {
+                    this.JumpWallSide.SetJumpAble(true);
+                    Characterground = CharacterGround.Ground;
+                    JumpWallBack.SetJumpAble(true);
+                    FootsAngle = collider.transform.rotation.eulerAngles.z;
+                    if (FootsAngle == 0)
+                    {
+                        Characterground = CharacterGround.Ground;
+                    }
+                    else
+                    {
+                        Characterground = CharacterGround.SlopePlatform;
+                    }
+                    break;
+                }
+                else if (collider.CompareTag("Platform"))
+                {
+
+                    if (MyRigidbody2D.angularVelocity <= 0 && gameObject.transform.position.y > collider.transform.position.y)
+                    {
+                        Characterground = CharacterGround.Platform;
+                        JumpWallBack.SetJumpAble(true);
+                        JumpWallSide.SetJumpAble(true);
+                        FootsAngle = collider.transform.rotation.eulerAngles.z;
+                        if (FootsAngle == 0)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Characterground = CharacterGround.Air;
+                    }
+                }
+                else
+                {
+                    Characterground = CharacterGround.Air;
+                }
+            }
+        }
+        else
+        {
+            HitWall = IsHitWall.None;
+            Characterground = CharacterGround.Air;
+            HitObjectClimbAble = IsHitObjectClimbAble.None;
+            ClimbObject = null;
+        }
+        if (Characterground == CharacterGround.SlopePlatform && CharacterStateMachine.Current_state == Idle)
+        {
+            MyRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+        }
+        else
+        {
+            MyRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        }
+        if (Characterground == CharacterGround.Air)
+        {
+            Airtime += 1;
+            MyRigidbody2D.drag = 0;
+            if (HitWall != IsHitWall.None || HitObjectClimbAble != IsHitObjectClimbAble.None)
+            {
+                Hitted_box.isTrigger = false;
+            }
+            else
+            {
+                Hitted_box.isTrigger = true;
+            }
+        }
+        else
+        {
+            Airtime = 0;
+            MyRigidbody2D.drag = 1;
+            if (CharacterStateMachine.Current_state == dropDown)
+            {
+                Hitted_box.isTrigger = true;
+            }
+            else
+            {
+                Hitted_box.isTrigger = false;
+            }
+            if (CharacterStateMachine.Current_state != Jump)
+            {
+                jumpCount = 2;
+            }
+        }
+    }
+    private Collider2D ClimbObject { get; set; }
 }
 

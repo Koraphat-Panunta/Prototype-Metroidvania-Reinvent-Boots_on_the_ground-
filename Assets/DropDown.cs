@@ -25,7 +25,7 @@ public class DropDown : State
     public override void FrameUpdateState()
     {
         AnimateFrame++;
-        if(AnimateFrame >= 90) 
+        if(AnimateFrame >= 140) 
         {
             ExitState();
         }

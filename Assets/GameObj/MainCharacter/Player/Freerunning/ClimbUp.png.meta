@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +108,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ClimbUp_0
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 1829
+        width: 52
+        height: 124
+      alignment: 9
+      pivot: {x: 0.30198187, y: 0.017487558}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02801d67204ab9642994224cbe776f48
+      internalID: 357616227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_1
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 1851
+        width: 60
+        height: 98
+      alignment: 9
+      pivot: {x: 0.33191732, y: 0.03835748}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0665261ed436b45478f34ba5ed7c5276
+      internalID: -76555608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_2
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 1867
+        width: 55
+        height: 102
+      alignment: 9
+      pivot: {x: 0.19103228, y: 0.008981742}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13e4d59c4ad4d0b4e843afd034122499
+      internalID: -1008017204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_3
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 1883
+        width: 53
+        height: 92
+      alignment: 9
+      pivot: {x: 0.20352231, y: 0.007687776}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a350c940da3571c478905e73d974ba73
+      internalID: 957272665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_4
+      rect:
+        serializedVersion: 2
+        x: 1112
+        y: 1891
+        width: 65
+        height: 86
+      alignment: 9
+      pivot: {x: 0.18029034, y: 0.0069026505}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c283da17b59803141b2af1c59adfc6ee
+      internalID: -1404107733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_5
+      rect:
+        serializedVersion: 2
+        x: 1367
+        y: 1901
+        width: 89
+        height: 65
+      alignment: 9
+      pivot: {x: 0.22108442, y: 0.025890173}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95b8529eac4741f4387752cd6600979b
+      internalID: 784621542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_6
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 1906
+        width: 73
+        height: 86
+      alignment: 9
+      pivot: {x: 0.25712523, y: 0.013944404}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e608a790465e4d04ebeafee0be1bc8b2
+      internalID: -565014641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClimbUp_7
+      rect:
+        serializedVersion: 2
+        x: 1899
+        y: 1918
+        width: 50
+        height: 96
+      alignment: 9
+      pivot: {x: 0.21476807, y: 0.009189606}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00f7cbb3be3aa814fb7e5de22d0e4100
+      internalID: 110575938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +287,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ClimbUp_0: 357616227
+      ClimbUp_1: -76555608
+      ClimbUp_2: -1008017204
+      ClimbUp_3: 957272665
+      ClimbUp_4: -1404107733
+      ClimbUp_5: 784621542
+      ClimbUp_6: -565014641
+      ClimbUp_7: 110575938
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -10,6 +10,9 @@ public class JumpWallSide : JumpState
     }
     public override void EnterState()
     {
+        base.Animation.Play("Jump");
+        base.Aniamtion_frame = 0;
+        base.Jumpphase = JumpPhase.Jumping;
         base.EnterState();
     }
     public override void ExitState()
@@ -18,6 +21,15 @@ public class JumpWallSide : JumpState
     }
     public override void FrameUpdateState()
     {
+        if(Aniamtion_frame == 5) 
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(0, JUMPFORCE));
+        }
+        else if(Aniamtion_frame >= 40) 
+        {
+            ExitState();
+        }
         base.FrameUpdateState();
     }
 

@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - DamageBox
   - Platform
+  - Wall
+  - ClimbObject
   layers:
   - Default
   - TransparentFX
