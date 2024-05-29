@@ -17,15 +17,8 @@ public abstract class Character : MonoBehaviour
     public Collider2D IsGroundbox;
     public GameObject Raypoint;
 
-    //Define Character State
-    public IdleState Idle;
-    public WalkState Walk;
-    public SprintState Sprint;
-    public AttackState Attack;//Current Attack state
-    public CrouchState Crouch;
-    public JumpState Jump;
-    public FallState Fall;
     public CharacterStateMachine CharacterStateMachine;//Define Current Character State
+    public IdleState Idle;
 
     //For Calculate Angular Velocity of Character,Object
     [SerializeField] public float AngularVelocity;
@@ -33,14 +26,7 @@ public abstract class Character : MonoBehaviour
 
     //public bool Isground;
     //public bool IsOnSlope;
-    public enum CharacterGround 
-    {
-        Ground,
-        Platform,
-        SlopePlatform,
-        Air
-    }
-    public CharacterGround Characterground;
+    
     public bool IsOnWallBack;
     [SerializeField] public float FootsAngle;
     public float Velocity;
@@ -56,7 +42,7 @@ public abstract class Character : MonoBehaviour
     public bool IsControlbyPlayer { get;protected set; }
     protected virtual void SetupState() 
     {
-        CharacterStateMachine = new CharacterStateMachine(Idle);
+        Idle = new IdleState(MyAnimator, MyCharacter);
     }
     
     virtual protected void Start()
@@ -65,21 +51,18 @@ public abstract class Character : MonoBehaviour
         MyDirection = Direction.Right;
         Attack_box.enabled = false;
         SetupState();
+        CharacterStateMachine = new CharacterStateMachine(Idle);
     }
 
     // Update is called once per frame
     virtual protected void Update()
     {
         CharacterStateMachine.UpdateState();
-        PerformedState();
     }
     virtual protected void FixedUpdate()
     {
-        if(CharacterStateMachine.Current_state != Walk && CharacterStateMachine.Current_state != Sprint) 
-        {
-            Velocity = 0f;
-        }
-        if(MyRigidbody2D.bodyType == RigidbodyType2D.Kinematic&& MyRigidbody2D.velocity.x != 0) 
+       
+        if (MyRigidbody2D.bodyType == RigidbodyType2D.Kinematic && MyRigidbody2D.velocity.x != 0)
         {
             MyRigidbody2D.velocity = Vector3.zero;
         }
@@ -124,48 +107,7 @@ public abstract class Character : MonoBehaviour
             }
         }
         Debug.DrawRay(Origin, Directional);
-    }
-    virtual protected void PerformedState() 
-    {
-        PerformedIdle();
-        PerformedRun();
-        PerformedSprint();
-        PerformedAttack();
-        PerformedCrouch();
-        PerformedJump();
-        PerformedFall();
-    }
-    virtual protected void PerformedIdle() 
-    {
-        
-    }
-    virtual protected void PerformedRun() 
-    {
-       
-    }
-    virtual protected void PerformedSprint() 
-    {
-       
-    }
-    virtual protected void PerformedAttack() 
-    {
-        
-        
-    }
-    virtual protected void PerformedCrouch() 
-    {
-       
-    }
-    virtual protected void PerformedJump() 
-    {
-       
-
-    }
-    virtual protected void PerformedFall() 
-    {
-        
-    }
-    
+    }  
     private void CalAngularVelocity(float PreviosFramePositipn) 
     {
         AngularVelocity = gameObject.transform.position.y - PreviosFramePositipn;
@@ -179,17 +121,7 @@ public abstract class Character : MonoBehaviour
     {
         Debug.Log("GotAttack");
     }
-    public bool IsGround() 
-    {
-        if(Characterground == CharacterGround.Ground || Characterground == CharacterGround.SlopePlatform || Characterground == CharacterGround.Platform) 
-        {
-            return true;
-        }
-        else 
-        { 
-            return false; 
-        }
-    }
+    
     
    
 }

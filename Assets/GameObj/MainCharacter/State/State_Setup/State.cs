@@ -11,6 +11,7 @@ public abstract class State
     protected Animator Animation;
     protected GameObject ObjCharacter;
     protected Character Character;
+    protected Player Player;
 
     public enum stateAbleToBypass
     {
@@ -24,6 +25,10 @@ public abstract class State
         Animation = animator;
         ObjCharacter = Char;
         Character = ObjCharacter.GetComponent<Character>();
+        if(Character.IsControlbyPlayer == true) 
+        {
+            Player = Character.GetComponent<Player>();
+        }
     }
     public virtual void EnterState() 
     {

@@ -22,7 +22,7 @@ public class SprintState : State
     }
     public override void EnterState()
     {
-        if(Character.Idle.IsExit == true|| Character.Walk.IsExit == true) 
+        if(Player.Idle.IsExit == true|| Player.Walk.IsExit == true) 
         {
             Animation.Play("Pre-Run");
             sprintPhase = SprintPhase.Pre_run ;

@@ -18,7 +18,7 @@ public abstract class StateMachine
         Current_state.PhysicUpdateState();
     }
     public void ChangeState(State Nextstate) 
-    {
+    { 
         Current_state.ExitState();
         Current_state = Nextstate;
         Current_state.EnterState();

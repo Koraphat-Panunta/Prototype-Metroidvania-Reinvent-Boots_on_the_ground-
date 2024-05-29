@@ -28,10 +28,6 @@ public class JumpWallBack : JumpState
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, JUMPFORCE));
         }
-        if (base.Character.IsGround() == false)
-        {
-            Jumpphase = JumpPhase.Jumping;
-        }
         else if (base.Aniamtion_frame > 40)
         {
             Jumpphase = JumpPhase.Jumping;

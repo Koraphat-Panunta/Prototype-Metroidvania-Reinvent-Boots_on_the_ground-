@@ -8,27 +8,25 @@ public class WalkState : State
     private float TopSpeed = 2;
     private float AcceletorSpeed = 0.2f;
     private float DeceletorSpeed = 0.2f;
-    private Rigidbody2D rb;
+    
 
     
     public WalkState(Animator animator, GameObject Char,float Speed,float Acceletor) : base(animator, Char)
     {
-        rb = Char.GetComponent<Rigidbody2D>();
         TopSpeed = Speed;
         AcceletorSpeed = Acceletor;
         
     }
     public WalkState(Animator animator, GameObject Char) : base(animator, Char)
     {
-        rb = Char.GetComponent<Rigidbody2D>();
 
     }
 
     public override void EnterState()
     {
-        if (Character.Sprint != null)
+        if (Player.Sprint != null)
         {
-            if (Character.Sprint.IsExit == true)
+            if (Player.Sprint.IsExit == true)
             {
                 Animation.Play("Post-Run");
             }
@@ -73,7 +71,7 @@ public class WalkState : State
         }
         if(Character.MyDirection == Character.Direction.Right) 
         {
-            if (rb.velocity.x < TopSpeed)
+            if (Character.MyRigidbody2D.velocity.x < TopSpeed)
             {
                 Character.Velocity += AcceletorSpeed;
             }
@@ -82,7 +80,7 @@ public class WalkState : State
                 Character.Velocity -= DeceletorSpeed;
             }
         }
-        rb.velocity = new Vector2(Character.Velocity / rb.mass, rb.velocity.y);
+        Character.MyRigidbody2D.velocity = new Vector2(Character.Velocity / Character.MyRigidbody2D.mass, Character.MyRigidbody2D.velocity.y);
         base.PhysicUpdateState();
     }
     protected override void SetStateLevel()

@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    
     public IdleState(Animator animator,GameObject Char):base(animator,Char) 
     {
-        
     }
     public override void EnterState()
     {
-        if (Character.Sprint == null)
+        if (Player.Sprint == null)
         {
             Animation.Play("Idle");
         }
         else
         {
-            if (Character.Sprint.IsExit == true)
+            if (Character.GetComponent<Player>().Sprint.IsExit == true)
             {
                 Animation.Play("Post-Run");
             }

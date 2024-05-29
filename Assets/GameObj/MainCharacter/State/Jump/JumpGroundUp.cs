@@ -26,10 +26,7 @@ public class JumpGroundUp : JumpState
         {
             rb.AddForce(new Vector2(0, JUMPFORCE));
         }
-        if (base.Character.IsGround() == false)
-        {
-            Jumpphase = JumpPhase.Jumping;
-        }
+        
         else if (base.Aniamtion_frame > 40)
         {
             Jumpphase = JumpPhase.Jumping;

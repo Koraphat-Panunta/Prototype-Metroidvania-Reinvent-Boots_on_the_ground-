@@ -13,13 +13,6 @@ public class ChacterBox : MonoBehaviour
     }
     private void Update()
     {
-        //foreach (Collider2D Collider in Floor) 
-        //{
-        //    if (Collider.transform.rotation.z != 0) 
-        //    {
-        //        floorAngle = Collider.transform.rotation.z;
-        //    }
-        //}
         
     }
     private void OnCollisionStay2D(Collision2D collision)

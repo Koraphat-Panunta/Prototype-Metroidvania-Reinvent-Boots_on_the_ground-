@@ -8,6 +8,13 @@ public class Enemy : Character
     [SerializeField] protected float Pressure = 0;
     public float Distance;
 
+    public WalkState Walk;
+    public SprintState Sprint;
+    public AttackState Attack;//Current Attack state
+    public CrouchState Crouch;
+    public JumpState Jump;
+    public FallState Fall;
+
     private AttackNormal_1 AttackNormal1;
     private WalkBack WalkBack;
     public enum Enemy_Role 
@@ -58,10 +65,6 @@ public class Enemy : Character
         RoleManager();
         base.FixedUpdate();
         DectionalTarget("Player");
-    }
-    protected override void PerformedState()
-    {
-        base.PerformedState();
     }
     private void CalculateDistanceTarget() 
     {
@@ -174,21 +177,21 @@ public class Enemy : Character
             }
         }
     }
-    protected override void PerformedAttack()
-    {
-        if(CharacterStateMachine.Current_state == Attack) 
-        {
-            if (Attack.IsExit == true) 
-            {
-                AccesstoStateCrossraod();
-            }
-            if(Attack.IsEnter == true) 
-            {
-                Pressure += 25;
-            }
-        }
-        base.PerformedAttack();
-    }
+    //protected override void PerformedAttack()
+    //{
+    //    if(CharacterStateMachine.Current_state == Attack) 
+    //    {
+    //        if (Attack.IsExit == true) 
+    //        {
+    //            AccesstoStateCrossraod();
+    //        }
+    //        if(Attack.IsEnter == true) 
+    //        {
+    //            Pressure += 25;
+    //        }
+    //    }
+    //    base.PerformedAttack();
+    //}
     public override void AccesstoStateCrossraod()
     {
         if(CurrentEnemyRole == Enemy_Role.Stand) 

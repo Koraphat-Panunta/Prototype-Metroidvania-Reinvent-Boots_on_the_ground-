@@ -14,9 +14,9 @@ public class WalkBack : State
     }
     public override void EnterState()
     {
-        if (Character.Sprint != null)
+        if (Player.Sprint != null)
         {
-            if (Character.Sprint.IsExit == true)
+            if (Player.Sprint.IsExit == true)
             {
                 Animation.Play("Post-Run");
             }
