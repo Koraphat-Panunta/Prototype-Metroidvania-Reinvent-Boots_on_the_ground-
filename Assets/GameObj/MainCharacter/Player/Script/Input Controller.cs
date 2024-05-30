@@ -379,15 +379,17 @@ public class InputController : MonoBehaviour
             {
                 Player.Climb.ClimbHang();
             }
+            if(Player.Climb.IsExit == true) 
+            {
+                AccesstoStateCrossraod();
+            }
             if (PlayerCollider.HitObjectClimbAble == CheckPlayerCollider.IsHitObjectClimbAble.Left)
             {
                 Player.MyDirection = Direction.Left;
-                gameObject.transform.position = new Vector2(collider.transform.position.x + 0.45F, gameObject.transform.position.y);
             }
             if (PlayerCollider.HitObjectClimbAble == CheckPlayerCollider.IsHitObjectClimbAble.Right)
             {
                 Player.MyDirection = Direction.Right;
-                gameObject.transform.position = new Vector2(collider.transform.position.x - 0.45F, gameObject.transform.position.y);
             }
 
         }

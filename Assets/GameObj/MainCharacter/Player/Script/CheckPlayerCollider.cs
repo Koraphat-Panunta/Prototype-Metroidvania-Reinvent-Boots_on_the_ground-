@@ -29,7 +29,7 @@ public class CheckPlayerCollider : MonoBehaviour
     public CharacterGround Characterground;
     public IsHitWall HitWall = IsHitWall.None;
     public IsHitObjectClimbAble HitObjectClimbAble = IsHitObjectClimbAble.None;
-    public Collider2D ClimbObject { get; private set;}
+    public Collider2D ClimbObject; /*{ get; private set;}*/
     [SerializeField] private Player Player;
     public double Airtime = 0;
     void Start()
@@ -80,8 +80,11 @@ public class CheckPlayerCollider : MonoBehaviour
                 }
                 else
                 {
-                    HitObjectClimbAble = IsHitObjectClimbAble.None;
-                    ClimbObject = null;
+                    if (Player.CharacterStateMachine.Current_state != Player.Climb)
+                    {
+                        HitObjectClimbAble = IsHitObjectClimbAble.None;
+                        ClimbObject = null;
+                    }
                 }
                 if (collider.CompareTag("Ground"))
                 {
@@ -143,6 +146,21 @@ public class CheckPlayerCollider : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+    public float LowestPosClimbObj() 
+    {        
+        return ClimbObject.transform.position.y-(float)(ClimbObject.bounds.size.y/2f);
+    }
+    public float HighestPosClimbObj()
+    {
+        if (ClimbObject != null)
+        {
+            return ClimbObject.transform.position.y + (float)(ClimbObject.bounds.size.y / 2f);
+        }
+        else
+        {
+            return 0;
         }
     }
 }

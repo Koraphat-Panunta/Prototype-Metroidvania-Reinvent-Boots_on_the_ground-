@@ -1643,7 +1643,7 @@ Transform:
   m_GameObject: {fileID: 1106865778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41, y: -1.58, z: 0}
+  m_LocalPosition: {x: 0.56, y: -1.58, z: 0}
   m_LocalScale: {x: 10.488192, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2466,6 +2466,7 @@ MonoBehaviour:
   Characterground: 0
   HitWall: 0
   HitObjectClimbAble: 0
+  ClimbObject: {fileID: 0}
   Player: {fileID: 0}
   Airtime: 0
 --- !u!1 &1853980221
@@ -2792,7 +2793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5032420639156736938, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.64
+      value: -2.13
       objectReference: {fileID: 0}
     - target: {fileID: 5032420639156736938, guid: 91935e60d90a3af47a783e8d512e6255, type: 3}
       propertyPath: m_LocalPosition.y

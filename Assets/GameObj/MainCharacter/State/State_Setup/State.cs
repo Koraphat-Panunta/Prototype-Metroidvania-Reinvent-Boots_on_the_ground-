@@ -54,7 +54,6 @@ public abstract class State
                 nextframeIsExit = true;
             }
         }
-        
     }
     public virtual void PhysicUpdateState() { }
     public virtual void ExitState() 
@@ -63,5 +62,6 @@ public abstract class State
         IsExit = true;
     }
     protected abstract void SetStateLevel();//Set a state Level that let other state to bypass
+    
    
 }
